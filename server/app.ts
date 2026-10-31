@@ -5,14 +5,16 @@ import { securityHeaders } from './middleware/security';
 import { createRateLimiter } from './middleware/rateLimit';
 import { errorHandler } from './middleware/errorHandler';
 import { createHealthRouter } from './routes/health';
+import { createAiRouter } from './routes/ai';
 import { getEnv } from './config/env';
 
 export interface AppDependencies {
   // swappable dependencies for testing and ports
   env?: ReturnType<typeof getEnv>;
+  aiOrchestrator?: any;
 }
 
-export function createApp(_deps: AppDependencies = {}): Express {
+export function createApp(deps: AppDependencies = {}): Express {
   const app = express();
 
   // Core middleware
@@ -28,6 +30,7 @@ export function createApp(_deps: AppDependencies = {}): Express {
 
   // Routes
   app.use('/api/health', createHealthRouter());
+  app.use('/api/ai', createAiRouter(deps.aiOrchestrator));
 
   // Error handling
   app.use(errorHandler);

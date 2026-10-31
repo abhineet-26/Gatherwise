@@ -11,7 +11,10 @@ import { ActivityView } from './features/activity/ActivityView';
 import { SettingsView } from './features/settings/SettingsView';
 import { EventWizard } from './features/events/EventWizard';
 import { LandingPage } from './features/landing/LandingPage';
+import { AssistantPanel } from './features/copilot/AssistantPanel';
+import { IdeaStudioView } from './features/copilot/IdeaStudioView';
 import { createSeededScenarios } from './demo/seedData';
+
 export default function App() {
   const { workspace, loadWorkspace, setWorkspace, repository } = useWorkspaceStore();
   const { 
@@ -25,6 +28,7 @@ export default function App() {
 
   const [showWizard, setShowWizard] = useState(false);
   const [showLanding, setShowLanding] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
 
   const today = getEffectiveToday();
 
@@ -57,7 +61,9 @@ export default function App() {
     else if (nav === 'tasks') setActiveTab('timeline');
     else if (nav === 'vendors') setActiveTab('vendors');
     else if (nav === 'guests') setActiveTab('guests');
-    else if (nav === 'events') setActiveTab('overview'); // or show event switcher
+    else if (nav === 'ideas') setActiveTab('ideas');
+    else if (nav === 'copilot') setAssistantOpen(true);
+    else if (nav === 'events') setActiveTab('overview');
     else if (nav === 'settings') setActiveTab('settings');
     else if (nav === 'reconciliation') setActiveTab('budget');
   };
@@ -68,7 +74,7 @@ export default function App() {
     budget: 'budget',
     vendors: 'vendors',
     guests: 'guests',
-    ideas: 'copilot',
+    ideas: 'ideas',
     activity: 'dashboard',
     settings: 'settings',
   };
@@ -107,6 +113,7 @@ export default function App() {
     <AppShell
       currentTab={navItemMap[activeTab] || 'dashboard'}
       onNavigate={handleNav}
+      onToggleCopilot={() => setAssistantOpen(prev => !prev)}
       eventName={workspace.event.name}
       eventDate={workspace.event.date}
     >
@@ -122,6 +129,12 @@ export default function App() {
 
       {/* Guests & RSVPs View */}
       {activeTab === 'guests' && <GuestsView />}
+
+      {/* Idea Studio View */}
+      {activeTab === 'ideas' && <IdeaStudioView />}
+
+      {/* Floating Assistant Drawer */}
+      <AssistantPanel isOpen={assistantOpen} onClose={() => setAssistantOpen(false)} />
 
       {/* Floating Toast Notifications Container */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">

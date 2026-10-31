@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   SlidersHorizontal,
+  Lightbulb,
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -29,6 +30,7 @@ export type NavItem =
   | 'tasks'
   | 'vendors'
   | 'guests'
+  | 'ideas'
   | 'copilot'
   | 'what-if'
   | 'risks'
@@ -38,6 +40,7 @@ export type NavItem =
 export interface AppShellProps {
   currentTab: NavItem;
   onNavigate: (tab: NavItem) => void;
+  onToggleCopilot?: () => void;
   children: React.ReactNode;
   eventName?: string;
   eventDate?: string;
@@ -47,6 +50,7 @@ export interface AppShellProps {
 export const AppShell: React.FC<AppShellProps> = ({
   currentTab,
   onNavigate,
+  onToggleCopilot,
   children,
   eventName = "Ananya & Arjun's Wedding",
   eventDate = 'Nov 24, 2026',
@@ -61,6 +65,7 @@ export const AppShell: React.FC<AppShellProps> = ({
     { id: 'tasks', label: 'Timeline & Tasks', icon: <CheckSquare className="w-5 h-5" /> },
     { id: 'vendors', label: 'Vendors & Quotes', icon: <Store className="w-5 h-5" /> },
     { id: 'guests', label: 'Guests & RSVP', icon: <Users className="w-5 h-5" /> },
+    { id: 'ideas', label: 'Idea Studio', icon: <Lightbulb className="w-5 h-5" /> },
     { id: 'copilot', label: 'AI Copilot', icon: <Sparkles className="w-5 h-5" />, badge: aiEnabled ? 'Live' : 'Rule-based' },
     { id: 'what-if', label: 'What-if Lab', icon: <SlidersHorizontal className="w-5 h-5" /> },
     { id: 'risks', label: 'Risks & Contingency', icon: <ShieldAlert className="w-5 h-5" /> },
@@ -256,6 +261,16 @@ export const AppShell: React.FC<AppShellProps> = ({
                 <span>INR</span>
                 <span>₹</span>
               </div>
+
+              {/* Ask Copilot Button */}
+              <button
+                onClick={onToggleCopilot || (() => onNavigate('copilot'))}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gw-indigo-50 hover:bg-gw-indigo-100 text-gw-indigo-700 font-semibold text-xs border border-gw-indigo-200 shadow-xs transition-colors"
+                aria-label="Open AI Copilot"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-gw-marigold-800" />
+                <span className="hidden sm:inline">Ask Copilot</span>
+              </button>
 
               {/* Quick Action Button */}
               <button

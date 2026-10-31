@@ -7,9 +7,9 @@
 | Field | Value |
 | --- | --- |
 | Scope profile | **Standard** (Phases 0-5 and 7; see PRD §6) |
-| Current phase | Phase 4 (AI Copilot) |
+| Current phase | Phase 5 (Intelligence and Differentiators) |
 | Last updated | 2026-11-01 |
-| Last `npm run check` | 2026-11-01: typecheck clean, 19 test files (130 tests) pass, build clean (dist/client 109.9 KB gzip JS) |
+| Last `npm run check` | 2026-11-01: typecheck clean, 20 test files (138 tests) pass, build clean (dist/client 124.3 KB gzip JS) |
 | Repo size / branches | Tracked files: ~750 KB (< 10 MB limit), branch: main |
 
 ## Phase ledger
@@ -20,7 +20,7 @@
 | P1 | Domain: schemas, commands, undo, planning engine, readiness, risks | done | `npm run check` → 16 files (117 tests) passed (2026-11-01) | Pure domain, reversible commands, wedding/birthday/community packs |
 | P2 | Core UI: wizard, dashboard, tasks, budget, payments, exports, demo + Time Travel | done | `npm run check` → 18 files (123 tests) passed; IndexedDB local repo + store contract tests pass (2026-11-01) | 6-step wizard, Readiness Bloom, stacked budget bar, 3 task views, time travel demo, 50-item undo |
 | P3 | Vendors, quotes, guests, headcount, catering brief | done | `npm run check` → 19 files (130 tests) passed (2026-11-01); J3 (₹4,95,600 vs ₹4,65,000 diff ₹30,600) and J5 pass | Vendor pipeline, quote MCDA comparison, accept to commitment, headcount planner, catering brief, CSV import/export |
-| P4 | AI copilot, tools, proposals, fallback, Idea Studio | in_progress | | |
+| P4 | AI copilot, tools, proposals, fallback, Idea Studio | done | `npm run check` → 20 files (138 tests) passed (2026-11-01); PII-minimisation, number audit, proposal dry-run and invariant guards, rule-based fallback, FakeLlm & Gemini port verified | Server-side Gemini with fallback assistant, 5-min cache, proposal review/approval with undo, Idea Studio |
 | P5 | What-if Lab, weather, quote scanner, invite studio, contingency, drift | todo | | |
 | P6 | Run-of-show, Day-of, funding, cloud mode, Hindi (Full tier) | todo | | |
 | P7 | Hardening, PWA, docs, README, audit, submission checks | todo | | |
@@ -32,7 +32,7 @@
 | J1 First plan in minutes | 2026-11-01 | pass | Wizard creates multi-function event, generates tasks/budget/risks from pack, preview before applying |
 | J2 Money truth | 2026-11-01 | pass | Safe integer paise math, contingency % split, stacked bar + table, payment log & overdue alerts |
 | J3 Compare caterers | 2026-11-01 | pass | Vendor A ₹4,95,600 vs Vendor B ₹4,65,000 at 300 pax; difference ₹30,600; tax-inclusive normalisation verified in tests & UI |
-| J4 Plans change (assistant + proposal + undo) | | not run | Scheduled for Phase 4 |
+| J4 Plans change (assistant + proposal + undo) | 2026-11-01 | pass | Copilot evaluates context through read-only tools, proposes structured changes with ImpactPreview, human approves, atomic undo reverts changes |
 | J5 RSVP to caterer | 2026-11-01 | pass | Attendance planner calculates expected turnout + buffer; Catering Brief generated with dietary breakdown & print view |
 | J6 Time pressure (Time Travel) | 2026-11-01 | pass | Demo scrubber with T-60 to T-0 time travel recalculates bloom, budget, and overdue items |
 | J7 Rain on the parade | | not run | |
