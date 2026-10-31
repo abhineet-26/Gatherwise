@@ -16,11 +16,12 @@ import {
 
 interface LandingPageProps {
   onStartWizard: () => void;
+  onOpenWorkspace?: () => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStartWizard }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStartWizard, onOpenWorkspace }) => {
   const { getEffectiveToday, setCurrentEventId, setActiveTab, addToast } = useUiStore();
-  const { setWorkspace } = useWorkspaceStore();
+  const { workspace, setWorkspace } = useWorkspaceStore();
   const today = getEffectiveToday();
 
   const handleLoadDemo = async (scenarioKey: string) => {
@@ -31,6 +32,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartWizard }) => {
       setCurrentEventId(scenario.event.id);
       setActiveTab('overview');
       addToast(`Loaded demo: "${scenario.event.name}"`, 'success');
+      onOpenWorkspace?.();
     }
   };
 
@@ -53,6 +55,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartWizard }) => {
 
         {/* Primary CTAs */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
+          {workspace && (
+            <Button
+              size="lg"
+              onClick={() => onOpenWorkspace?.()}
+              className="text-sm bg-secondary hover:bg-secondary/90 text-white font-bold px-6 py-3 shadow-lg flex items-center gap-2"
+            >
+              Resume: {workspace.event.name} <ArrowRight className="w-4 h-4" />
+            </Button>
+          )}
+
           <Button
             size="lg"
             onClick={() => handleLoadDemo('demo-wedding-pune')}

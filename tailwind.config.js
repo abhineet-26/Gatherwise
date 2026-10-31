@@ -35,12 +35,24 @@ export default {
           DEFAULT: '#3730A3',
           dark: '#2E2788',
           light: '#E4E5FB',
+          subtle: 'var(--gw-indigo-50, #F0F0FD)',
         },
         secondary: {
           DEFAULT: '#0F766E',
           dark: '#0B6B64',
           light: '#E4F4F2',
+          subtle: 'var(--gw-peacock-50, #E4F4F2)',
         },
+        surface: {
+          DEFAULT: 'var(--gw-surface, #FFFFFF)',
+          subtle: 'var(--gw-sunken, #EEEFF6)',
+        },
+        border: {
+          DEFAULT: 'var(--gw-line, #DDDFEB)',
+        },
+        'text-primary': 'var(--gw-ink-900, #1C1B3A)',
+        'text-muted': 'var(--gw-ink-700, #44456A)',
+        'text-inverse': '#FFFFFF',
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', 'ui-sans-serif', 'system-ui', 'sans-serif'],

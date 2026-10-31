@@ -113,13 +113,21 @@ export const AssistantPanel: React.FC<{ isOpen: boolean; onClose: () => void }> 
   };
 
   return (
-    <div
-      role="dialog"
-      aria-label="GatherWise Copilot"
-      className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-surface shadow-2xl border-l border-border animate-in slide-in-from-right duration-200"
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-4 py-3 bg-surface-subtle">
+    <>
+      {/* Backdrop overlay */}
+      <div
+        className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs transition-opacity"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      <div
+        role="dialog"
+        aria-label="GatherWise Copilot"
+        className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-white dark:bg-stone-900 bg-surface shadow-2xl border-l border-border animate-in slide-in-from-right duration-200"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-border px-4 py-3 bg-surface-subtle">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-subtle text-primary">
             <Sparkles className="h-4 w-4" />
@@ -348,5 +356,6 @@ export const AssistantPanel: React.FC<{ isOpen: boolean; onClose: () => void }> 
         </div>
       </div>
     </div>
-  );
+  </>
+);
 };

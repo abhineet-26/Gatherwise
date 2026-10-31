@@ -28,7 +28,7 @@ export default function App() {
   } = useUiStore();
 
   const [showWizard, setShowWizard] = useState(false);
-  const [showLanding, setShowLanding] = useState(false);
+  const [showLanding, setShowLanding] = useState(true);
   const [assistantOpen, setAssistantOpen] = useState(false);
 
   const today = getEffectiveToday();
@@ -65,7 +65,7 @@ export default function App() {
     else if (nav === 'ideas') setActiveTab('ideas');
     else if (nav === 'what-if') setActiveTab('what-if');
     else if (nav === 'copilot') setAssistantOpen(true);
-    else if (nav === 'events') setActiveTab('overview');
+    else if (nav === 'events') setShowLanding(true);
     else if (nav === 'settings') setActiveTab('settings');
     else if (nav === 'reconciliation') setActiveTab('budget');
   };
@@ -89,6 +89,9 @@ export default function App() {
           setShowLanding(false);
           setShowWizard(true);
         }}
+        onOpenWorkspace={() => {
+          setShowLanding(false);
+        }}
       />
     );
   }
@@ -98,7 +101,10 @@ export default function App() {
       <div className="min-h-screen bg-stone-50 dark:bg-stone-950 py-10">
         <EventWizard
           onCancel={() => setShowWizard(false)}
-          onSuccess={() => setShowWizard(false)}
+          onSuccess={() => {
+            setShowWizard(false);
+            setShowLanding(false);
+          }}
         />
       </div>
     );
@@ -108,6 +114,7 @@ export default function App() {
     return (
       <LandingPage
         onStartWizard={() => setShowWizard(true)}
+        onOpenWorkspace={() => setShowLanding(false)}
       />
     );
   }
@@ -117,6 +124,7 @@ export default function App() {
       currentTab={navItemMap[activeTab] || 'dashboard'}
       onNavigate={handleNav}
       onToggleCopilot={() => setAssistantOpen(prev => !prev)}
+      onGoHome={() => setShowLanding(true)}
       eventName={workspace.event.name}
       eventDate={workspace.event.date}
     >

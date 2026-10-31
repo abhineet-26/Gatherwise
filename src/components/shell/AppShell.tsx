@@ -41,6 +41,7 @@ export interface AppShellProps {
   currentTab: NavItem;
   onNavigate: (tab: NavItem) => void;
   onToggleCopilot?: () => void;
+  onGoHome?: () => void;
   children: React.ReactNode;
   eventName?: string;
   eventDate?: string;
@@ -51,6 +52,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   currentTab,
   onNavigate,
   onToggleCopilot,
+  onGoHome,
   children,
   eventName = "Ananya & Arjun's Wedding",
   eventDate = 'Nov 24, 2026',
@@ -87,7 +89,11 @@ export const AppShell: React.FC<AppShellProps> = ({
         <aside className="hidden lg:flex fixed left-0 top-[29px] bottom-0 w-64 bg-white border-r border-gw-line flex-col justify-between z-40 select-none">
           <div className="flex flex-col">
             {/* Brand Logo & Title */}
-            <div className="p-4 flex items-center gap-3 border-b border-gw-line/70">
+            <div
+              className="p-4 flex items-center gap-3 border-b border-gw-line/70 cursor-pointer hover:bg-gw-sunken/50 transition-colors"
+              onClick={onGoHome}
+              title="Return to Home / Landing Page"
+            >
               <div className="w-9 h-9 rounded-xl bg-gw-indigo-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">
                 GW
               </div>
