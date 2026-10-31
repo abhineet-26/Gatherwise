@@ -8,6 +8,7 @@ export type WorkspaceTab =
   | 'vendors' 
   | 'guests' 
   | 'ideas' 
+  | 'what-if'
   | 'activity' 
   | 'settings';
 

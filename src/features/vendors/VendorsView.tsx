@@ -7,6 +7,7 @@ import { useUiStore } from '../../store/uiStore';
 import type { Vendor, Quotation } from 'shared/schemas/vendor';
 import { VendorModal } from './VendorModals';
 import { AddQuoteModal } from './AddQuoteModal';
+import { QuoteScannerModal } from './QuoteScannerModal';
 import { QuoteComparisonView } from './QuoteComparisonView';
 import { 
   Building2, 
@@ -29,6 +30,7 @@ export const VendorsView: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isAddVendorOpen, setIsAddVendorOpen] = useState(false);
   const [isAddQuoteOpen, setIsAddQuoteOpen] = useState(false);
+  const [isScanQuoteOpen, setIsScanQuoteOpen] = useState(false);
   const [editingVendor, setEditingVendor] = useState<Vendor | null>(null);
 
   if (!workspace) return null;
@@ -143,6 +145,14 @@ export const VendorsView: React.FC = () => {
               <Scale className="w-3.5 h-3.5" /> Quote Comparison ({quotes.length})
             </button>
           </div>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setIsScanQuoteOpen(true)}
+          >
+            <FileText className="w-4 h-4 mr-1 text-indigo-600" /> Scan Quote
+          </Button>
 
           <Button
             variant="secondary"
@@ -346,6 +356,11 @@ export const VendorsView: React.FC = () => {
         onSave={handleSaveQuote}
         eventId={event.id}
         vendors={vendors}
+      />
+
+      <QuoteScannerModal
+        isOpen={isScanQuoteOpen}
+        onClose={() => setIsScanQuoteOpen(false)}
       />
     </div>
   );

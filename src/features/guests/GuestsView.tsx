@@ -3,11 +3,12 @@ import { Button } from '../../components/ui/Button';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 import { useUiStore } from '../../store/uiStore';
 import type { Guest } from 'shared/schemas';
-import { GuestModal, InviteStudioModal } from './GuestModals';
+import { GuestModal } from './GuestModals';
+import { InviteStudioModal } from './InviteStudioModal';
 import { GuestCsvModal } from './GuestCsvModal';
 import { HeadcountPlannerView } from './HeadcountPlannerView';
 import { GuestTable } from './GuestTable';
-import { Search, FileSpreadsheet, UserPlus, Utensils } from 'lucide-react';
+import { Search, FileSpreadsheet, UserPlus, Utensils, Mail } from 'lucide-react';
 
 export const GuestsView: React.FC = () => {
   const { workspace, dispatch } = useWorkspaceStore();
@@ -22,6 +23,7 @@ export const GuestsView: React.FC = () => {
 
   const [isAddGuestOpen, setIsAddGuestOpen] = useState(false);
   const [isCsvModalOpen, setIsCsvModalOpen] = useState(false);
+  const [isInviteStudioOpen, setIsInviteStudioOpen] = useState(false);
   const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
   const [inviteGuest, setInviteGuest] = useState<Guest | null>(null);
 
@@ -145,6 +147,14 @@ export const GuestsView: React.FC = () => {
           <Button
             variant="secondary"
             size="sm"
+            onClick={() => setIsInviteStudioOpen(true)}
+          >
+            <Mail className="w-4 h-4 mr-1 text-primary" /> Invite Studio
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => setIsCsvModalOpen(true)}
           >
             <FileSpreadsheet className="w-4 h-4 mr-1" /> Import / Export CSV
@@ -260,12 +270,11 @@ export const GuestsView: React.FC = () => {
       />
 
       <InviteStudioModal
-        isOpen={!!inviteGuest}
-        onClose={() => setInviteGuest(null)}
-        guest={inviteGuest}
-        eventName={event.name}
-        eventDate={event.date}
-        subEvents={subEvents}
+        isOpen={isInviteStudioOpen || !!inviteGuest}
+        onClose={() => {
+          setIsInviteStudioOpen(false);
+          setInviteGuest(null);
+        }}
       />
 
       <GuestCsvModal

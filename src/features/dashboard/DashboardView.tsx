@@ -3,6 +3,7 @@ import { useWorkspaceStore } from '../../store/workspaceStore';
 import { useUiStore } from '../../store/uiStore';
 import { ReadinessBloom } from '../../components/readiness/ReadinessBloom';
 import { BudgetBar } from '../../components/budget/BudgetBar';
+import { WeatherWidget } from '../weather/WeatherWidget';
 import { Card } from '../../components/ui/Card';
 import { StatusPill } from '../../components/ui/StatusPill';
 import { Button } from '../../components/ui/Button';
@@ -171,6 +172,9 @@ export const DashboardView: React.FC = () => {
         <ReadinessBloom readiness={readiness} />
         <BudgetBar summary={budgetSummary} />
       </div>
+
+      {/* Meteorological Forecast & Climate Watch */}
+      <WeatherWidget />
 
       {/* Bottom Grid: Next 7 Days Deadlines & Top Risks */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

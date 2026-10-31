@@ -6,6 +6,7 @@ import { createRateLimiter } from './middleware/rateLimit';
 import { errorHandler } from './middleware/errorHandler';
 import { createHealthRouter } from './routes/health';
 import { createAiRouter } from './routes/ai';
+import { createWeatherRouter } from './routes/weather';
 import { getEnv } from './config/env';
 
 export interface AppDependencies {
@@ -31,6 +32,7 @@ export function createApp(deps: AppDependencies = {}): Express {
   // Routes
   app.use('/api/health', createHealthRouter());
   app.use('/api/ai', createAiRouter(deps.aiOrchestrator));
+  app.use('/api/weather', createWeatherRouter());
 
   // Error handling
   app.use(errorHandler);

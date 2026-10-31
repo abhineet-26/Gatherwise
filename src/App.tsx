@@ -13,6 +13,7 @@ import { EventWizard } from './features/events/EventWizard';
 import { LandingPage } from './features/landing/LandingPage';
 import { AssistantPanel } from './features/copilot/AssistantPanel';
 import { IdeaStudioView } from './features/copilot/IdeaStudioView';
+import { WhatIfView } from './features/whatif/WhatIfView';
 import { createSeededScenarios } from './demo/seedData';
 
 export default function App() {
@@ -62,6 +63,7 @@ export default function App() {
     else if (nav === 'vendors') setActiveTab('vendors');
     else if (nav === 'guests') setActiveTab('guests');
     else if (nav === 'ideas') setActiveTab('ideas');
+    else if (nav === 'what-if') setActiveTab('what-if');
     else if (nav === 'copilot') setAssistantOpen(true);
     else if (nav === 'events') setActiveTab('overview');
     else if (nav === 'settings') setActiveTab('settings');
@@ -75,6 +77,7 @@ export default function App() {
     vendors: 'vendors',
     guests: 'guests',
     ideas: 'ideas',
+    'what-if': 'what-if',
     activity: 'dashboard',
     settings: 'settings',
   };
@@ -132,6 +135,9 @@ export default function App() {
 
       {/* Idea Studio View */}
       {activeTab === 'ideas' && <IdeaStudioView />}
+
+      {/* What-if Lab View */}
+      {activeTab === 'what-if' && <WhatIfView />}
 
       {/* Floating Assistant Drawer */}
       <AssistantPanel isOpen={assistantOpen} onClose={() => setAssistantOpen(false)} />
