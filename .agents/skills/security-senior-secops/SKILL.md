@@ -38,14 +38,12 @@ postgresql://user:password@host
 mysql://user:password@host
 redis://:password@host
 
-# Private key material
------BEGIN RSA PRIVATE KEY-----
------BEGIN EC PRIVATE KEY-----
------BEGIN PGP PRIVATE KEY-----
+# Private key material patterns (sanitized reference)
+`-----BEGIN <TYPE> PRIVATE KEY-----` (e.g. RSA, EC, PGP, OPENSSH)
 
-# Cloud provider credentials
-AKIA[0-9A-Z]{16}          # AWS Access Key ID pattern
-AIza[0-9A-Za-z_-]{35}     # Google API Key pattern
+# Cloud provider credential patterns (sanitized reference)
+`AKIA...` (AWS Access Key ID format)
+`AIza...` (Google API Key format)
 ```
 
 #### Category 2 — Insecure Fallbacks (CRITICAL)
