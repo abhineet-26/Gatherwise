@@ -1,0 +1,70 @@
+:root {
+  /* Surface tiers */
+  --gw-paper: #F7F7FB;
+  --gw-surface: #FFFFFF;
+  --gw-sunken: #EEEFF6;
+
+  /* Typography ink */
+  --gw-ink-900: #1C1B3A;
+  --gw-ink-700: #44456A;
+  --gw-ink-600: #555779;
+
+  /* Dividers & Borders */
+  --gw-line: #DDDFEB;
+  --gw-line-strong: #767A9B;
+
+  /* Brand Accents */
+  --gw-indigo-700: #3730A3;
+  --gw-indigo-600: #4338CA;
+  --gw-indigo-100: #E4E5FB;
+  --gw-indigo-50: #F0F0FD;
+
+  /* Celebratory & Warning - Marigold */
+  --gw-marigold-800: #7A4A00;
+  --gw-marigold-400: #FFB938;
+  --gw-marigold-100: #FFF0CC;
+
+  /* Success & Nominal - Peacock / Emerald */
+  --gw-peacock-700: #0B6B64;
+  --gw-peacock-600: #0F766E;
+  --gw-peacock-50: #E4F4F2;
+
+  /* Danger & Overdue - Vermilion */
+  --gw-vermilion-700: #A82A14;
+  --gw-vermilion-600: #B8321B;
+  --gw-vermilion-50: #FDECE8;
+
+  /* Semantic tokens */
+  --bg: var(--gw-paper);
+  --surface: var(--gw-surface);
+  --text: var(--gw-ink-900);
+  --text-muted: var(--gw-ink-700);
+  --text-subtle: var(--gw-ink-600);
+  --primary: var(--gw-indigo-700);
+  --border: var(--gw-line);
+  --border-input: var(--gw-line-strong);
+  --focus: var(--gw-indigo-600);
+  --success: var(--gw-peacock-700);
+  --danger: var(--gw-vermilion-700);
+  --warning: var(--gw-marigold-800);
+  --highlight: var(--gw-marigold-400);
+}
+
+.dark {
+  --gw-paper: #12112A;
+  --gw-surface: #1B1A3D;
+  --gw-sunken: #252352;
+  --gw-ink-900: #ECECF8;
+  --gw-ink-700: #B9BAD9;
+  --gw-ink-600: #A0A2C8;
+  --gw-line: #3B3A73;
+  --gw-line-strong: #8A8DB8;
+  --gw-indigo-700: #B3B0FF;
+  --gw-indigo-600: #8E8AFF;
+  --gw-indigo-100: #2E2C6B;
+  --gw-indigo-50: #1B1A3D;
+  --gw-marigold-800: #FFC95C;
+  --gw-marigold-400: #FFC95C;
+  --gw-peacock-700: #5FD3C6;
+  --gw-vermilion-700: #FF9C8A;
+}

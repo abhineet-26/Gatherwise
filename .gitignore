@@ -1,0 +1,42 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# Environment and secrets (only .env.example is tracked)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+service-account*.json
+*-service-account*.json
+firebase-adminsdk*.json
+
+# Logs and OS files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Firebase local tooling
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Local databases and exports (may contain personal data)
+*.sqlite
+*.db
+gatherwise-export*.json
+
+# Spec archive
+files/
