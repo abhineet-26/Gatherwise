@@ -4,13 +4,11 @@ import { spawn } from 'child_process';
 // Starts both API server and Vite client concurrently for zero-config dev
 const server = spawn('npx', ['tsx', 'watch', 'server/index.ts'], {
   stdio: 'inherit',
-  shell: true,
   env: { ...process.env, PORT: process.env.PORT || '3001' },
 });
 
 const client = spawn('npx', ['vite'], {
   stdio: 'inherit',
-  shell: true,
   env: process.env,
 });
 

@@ -37,10 +37,8 @@ export function createApp(deps: AppDependencies = {}): Express {
   app.use('/api/weather', createWeatherRouter());
 
   // Serve static client bundle if built (production mode)
-  const clientDist = path.resolve(__dirname, '../client');
-  const rootClientDist = path.resolve(__dirname, '../../dist/client');
-  const targetDist = fs.existsSync(clientDist) ? clientDist : fs.existsSync(rootClientDist) ? rootClientDist : null;
-  if (targetDist) {
+  const targetDist = path.resolve(process.cwd(), 'dist/client');
+  if (fs.existsSync(targetDist)) {
     app.use(express.static(targetDist));
     app.get('*', (req, res, next) => {
       if (req.path.startsWith('/api')) return next();
