@@ -95,4 +95,18 @@ describe('Architecture Fitness Tests (ARCHITECTURE.md §17)', () => {
       expect(lines.length, `${file} is ${lines.length} lines (max 400)`).toBeLessThanOrEqual(400);
     }
   });
+
+  it('6. Client build output contains no secret patterns or backend keys', () => {
+    const distClientDir = path.resolve(__dirname, '../dist/client');
+    if (!fs.existsSync(distClientDir)) return; // Only checks when dist/client is built
+
+    const distFiles = findFiles(distClientDir, ['.js', '.html']);
+    const secretPattern = /AIza[0-9A-Za-z_-]{35}|-----BEGIN\s+PRIVATE\s+KEY-----/;
+
+    for (const file of distFiles) {
+      const content = fs.readFileSync(file, 'utf-8');
+      expect(secretPattern.test(content), `Found secret pattern in built bundle ${file}`).toBe(false);
+      expect(content.includes('process.env.GEMINI_API_KEY'), `${file} leaks GEMINI_API_KEY env`).toBe(false);
+    }
+  });
 });

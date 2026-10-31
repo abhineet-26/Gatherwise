@@ -7,10 +7,10 @@
 | Field | Value |
 | --- | --- |
 | Scope profile | **Standard** (Phases 0-5 and 7; see PRD §6) |
-| Current phase | Phase 7 (Hardening and Submission) |
+| Current phase | Phase 7 complete — Submission Ready |
 | Last updated | 2026-11-01 |
-| Last `npm run check` | 2026-11-01: typecheck clean, 23 test files (154 tests) pass, build clean (dist/client 124.5 KB gzip JS) |
-| Repo size / branches | Tracked files: ~920 KB (< 10 MB limit), branch: main |
+| Last `npm run check` | 2026-11-01: typecheck clean, 23 test files (155 tests) pass, build clean (dist/client 124.5 KB gzip JS) |
+| Repo size / branches | Tracked files: ~4 MB (< 10 MB limit), branch: main |
 
 ## Phase ledger
 
@@ -23,7 +23,7 @@
 | P4 | AI copilot, tools, proposals, fallback, Idea Studio | done | `npm run check` → 20 files (138 tests) passed (2026-11-01); PII-minimisation, number audit, proposal dry-run and invariant guards, rule-based fallback, FakeLlm & Gemini port verified | Server-side Gemini with fallback assistant, 5-min cache, proposal review/approval with undo, Idea Studio |
 | P5 | What-if Lab, weather, quote scanner, invite studio, contingency, drift | done | `npm run check` → 23 files (154 tests) passed (2026-11-01); J7 journey check passes in `tests/phase5.test.ts` | What-if Lab (headcount + line sliders + priority conflicts), commitment drift (>5% warning), Open-Meteo weather with cache, Quote Scanner OCR+GST math, multilingual Invite Studio |
 | P6 | Run-of-show, Day-of, funding, cloud mode, Hindi (Full tier) | roadmap | Standard Scope profile excludes Phase 6 full-tier features | Documented under Roadmap in README |
-| P7 | Hardening, PWA, docs, README, audit, submission checks | in-progress | `npm run check` passing cleanly; running submission verification | PWA manifest, production build, README generation |
+| P7 | Hardening, PWA, docs, README, audit, submission checks | done | `npm run check` → 23 files (155 tests) passed; `bash scripts/verify-submission.sh` → 0 failures (2026-11-01) | PWA webmanifest, multi-stage Node 22 Dockerfile, bundle secret-scan test, README without placeholders |
 
 ## Journey checks (PRD §7)
 
