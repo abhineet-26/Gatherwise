@@ -5,15 +5,13 @@ import { AppShell, type NavItem } from './components/shell/AppShell';
 import { DashboardView } from './features/dashboard/DashboardView';
 import { BudgetView } from './features/budget/BudgetView';
 import { TimelineView } from './features/timeline/TimelineView';
+import { VendorsView } from './features/vendors/VendorsView';
+import { GuestsView } from './features/guests/GuestsView';
 import { ActivityView } from './features/activity/ActivityView';
 import { SettingsView } from './features/settings/SettingsView';
 import { EventWizard } from './features/events/EventWizard';
 import { LandingPage } from './features/landing/LandingPage';
 import { createSeededScenarios } from './demo/seedData';
-import { Card } from './components/ui/Card';
-import { Button } from './components/ui/Button';
-import { Store, Users } from 'lucide-react';
-
 export default function App() {
   const { workspace, loadWorkspace, setWorkspace, repository } = useWorkspaceStore();
   const { 
@@ -57,6 +55,8 @@ export default function App() {
     if (nav === 'dashboard') setActiveTab('overview');
     else if (nav === 'budget') setActiveTab('budget');
     else if (nav === 'tasks') setActiveTab('timeline');
+    else if (nav === 'vendors') setActiveTab('vendors');
+    else if (nav === 'guests') setActiveTab('guests');
     else if (nav === 'events') setActiveTab('overview'); // or show event switcher
     else if (nav === 'settings') setActiveTab('settings');
     else if (nav === 'reconciliation') setActiveTab('budget');
@@ -117,48 +117,11 @@ export default function App() {
       {activeTab === 'activity' && <ActivityView />}
       {activeTab === 'settings' && <SettingsView />}
 
-      {/* Vendors Placeholder View (Full feature in Phase 3) */}
-      {activeTab === 'vendors' && (
-        <div className="max-w-4xl mx-auto p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <Store className="w-5 h-5 text-primary" /> Vendors & Quotations
-            </h2>
-            <Button size="sm" onClick={() => setActiveTab('budget')} className="text-xs">
-              View Budget Commitments
-            </Button>
-          </div>
-          <Card className="p-6 text-center text-xs text-stone-500 space-y-2">
-            <p className="font-semibold text-stone-700 dark:text-stone-300">
-              Vendor Directory & 300-Guest Quote Comparison Engine
-            </p>
-            <p>
-              Loaded {workspace.vendors.length} vendors and {workspace.quotes.length} quotations in current workspace.
-              Full vendor pipeline, GST quote normalisation, and catering brief live in Phase 3.
-            </p>
-          </Card>
-        </div>
-      )}
+      {/* Vendors & Quotations View */}
+      {activeTab === 'vendors' && <VendorsView />}
 
-      {/* Guests Placeholder View (Full feature in Phase 3) */}
-      {activeTab === 'guests' && (
-        <div className="max-w-4xl mx-auto p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <Users className="w-5 h-5 text-primary" /> Guest Management & RSVP
-            </h2>
-          </div>
-          <Card className="p-6 text-center text-xs text-stone-500 space-y-2">
-            <p className="font-semibold text-stone-700 dark:text-stone-300">
-              Guest List & Per-Function RSVP Tracker
-            </p>
-            <p>
-              Loaded {workspace.guests.length} guest records with dietary flags (Jain, nut-allergy).
-              Full headcount planner and catering brief generator live in Phase 3.
-            </p>
-          </Card>
-        </div>
-      )}
+      {/* Guests & RSVPs View */}
+      {activeTab === 'guests' && <GuestsView />}
 
       {/* Floating Toast Notifications Container */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">

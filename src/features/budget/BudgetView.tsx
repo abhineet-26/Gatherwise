@@ -10,6 +10,7 @@ import { formatMoney } from 'shared/domain/money/money';
 import { buildCsv } from 'shared/domain/export/csv';
 import type { BudgetLine, Payment } from 'shared/schemas';
 import { RecordPaymentModal, AddBudgetLineModal } from './BudgetModals';
+import { PaymentCalendar } from './PaymentCalendar';
 import { DollarSign, Plus, Download, Receipt } from 'lucide-react';
 
 export const BudgetView: React.FC = () => {
@@ -17,7 +18,7 @@ export const BudgetView: React.FC = () => {
   const { getEffectiveToday, addToast } = useUiStore();
   const today = getEffectiveToday();
 
-  const [activeSubTab, setActiveSubTab] = useState<'lines' | 'payments' | 'reconciliation'>('lines');
+  const [activeSubTab, setActiveSubTab] = useState<'lines' | 'payments' | 'calendar' | 'reconciliation'>('lines');
   const [showAddLineModal, setShowAddLineModal] = useState(false);
   const [showAddPaymentModal, setShowAddPaymentModal] = useState(false);
 
@@ -163,6 +164,14 @@ export const BudgetView: React.FC = () => {
           Disbursed Payments Log ({payments.length})
         </button>
         <button
+          onClick={() => setActiveSubTab('calendar')}
+          className={`pb-2.5 transition-colors border-b-2 ${
+            activeSubTab === 'calendar' ? 'border-primary text-primary' : 'border-transparent text-stone-500 hover:text-stone-800 dark:hover:text-stone-200'
+          }`}
+        >
+          Payment Schedule Calendar
+        </button>
+        <button
           onClick={() => setActiveSubTab('reconciliation')}
           className={`pb-2.5 transition-colors border-b-2 ${
             activeSubTab === 'reconciliation' ? 'border-primary text-primary' : 'border-transparent text-stone-500 hover:text-stone-800 dark:hover:text-stone-200'
@@ -284,6 +293,8 @@ export const BudgetView: React.FC = () => {
           </div>
         </Card>
       )}
+
+      {activeSubTab === 'calendar' && <PaymentCalendar />}
 
       <RecordPaymentModal
         isOpen={showAddPaymentModal}

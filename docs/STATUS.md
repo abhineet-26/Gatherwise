@@ -7,10 +7,10 @@
 | Field | Value |
 | --- | --- |
 | Scope profile | **Standard** (Phases 0-5 and 7; see PRD §6) |
-| Current phase | Phase 3 (Vendors, Quotes, Guests) |
+| Current phase | Phase 4 (AI Copilot) |
 | Last updated | 2026-11-01 |
-| Last `npm run check` | 2026-11-01: typecheck clean, 18 test files (123 tests) pass, build clean (dist/client 92.3 KB gzip JS) |
-| Repo size / branches | Tracked files: ~650 KB (< 10 MB limit), branch: main |
+| Last `npm run check` | 2026-11-01: typecheck clean, 19 test files (130 tests) pass, build clean (dist/client 109.9 KB gzip JS) |
+| Repo size / branches | Tracked files: ~750 KB (< 10 MB limit), branch: main |
 
 ## Phase ledger
 
@@ -19,8 +19,8 @@
 | P0 | Foundation: scaffold, tooling, CI, tokens, shell, ports, kernel tests green, architecture tests | done | `npm run check` → 10 files (93 tests) passed; `GET /api/health` → `{ai:false, weather:true, cloud:false}` (2026-11-01) | Baseline JS bundle 55 KB gzip (budget 180 KB) |
 | P1 | Domain: schemas, commands, undo, planning engine, readiness, risks | done | `npm run check` → 16 files (117 tests) passed (2026-11-01) | Pure domain, reversible commands, wedding/birthday/community packs |
 | P2 | Core UI: wizard, dashboard, tasks, budget, payments, exports, demo + Time Travel | done | `npm run check` → 18 files (123 tests) passed; IndexedDB local repo + store contract tests pass (2026-11-01) | 6-step wizard, Readiness Bloom, stacked budget bar, 3 task views, time travel demo, 50-item undo |
-| P3 | Vendors, quotes, guests, headcount, catering brief | todo | | |
-| P4 | AI copilot, tools, proposals, fallback, Idea Studio | todo | | |
+| P3 | Vendors, quotes, guests, headcount, catering brief | done | `npm run check` → 19 files (130 tests) passed (2026-11-01); J3 (₹4,95,600 vs ₹4,65,000 diff ₹30,600) and J5 pass | Vendor pipeline, quote MCDA comparison, accept to commitment, headcount planner, catering brief, CSV import/export |
+| P4 | AI copilot, tools, proposals, fallback, Idea Studio | in_progress | | |
 | P5 | What-if Lab, weather, quote scanner, invite studio, contingency, drift | todo | | |
 | P6 | Run-of-show, Day-of, funding, cloud mode, Hindi (Full tier) | todo | | |
 | P7 | Hardening, PWA, docs, README, audit, submission checks | todo | | |
@@ -31,9 +31,9 @@
 | --- | --- | --- | --- |
 | J1 First plan in minutes | 2026-11-01 | pass | Wizard creates multi-function event, generates tasks/budget/risks from pack, preview before applying |
 | J2 Money truth | 2026-11-01 | pass | Safe integer paise math, contingency % split, stacked bar + table, payment log & overdue alerts |
-| J3 Compare caterers | | not run | Scheduled for Phase 3 |
+| J3 Compare caterers | 2026-11-01 | pass | Vendor A ₹4,95,600 vs Vendor B ₹4,65,000 at 300 pax; difference ₹30,600; tax-inclusive normalisation verified in tests & UI |
 | J4 Plans change (assistant + proposal + undo) | | not run | Scheduled for Phase 4 |
-| J5 RSVP to caterer | | not run | Scheduled for Phase 3 |
+| J5 RSVP to caterer | 2026-11-01 | pass | Attendance planner calculates expected turnout + buffer; Catering Brief generated with dietary breakdown & print view |
 | J6 Time pressure (Time Travel) | 2026-11-01 | pass | Demo scrubber with T-60 to T-0 time travel recalculates bloom, budget, and overdue items |
 | J7 Rain on the parade | | not run | |
 | J8 Day-of (Full) | | not run | |
@@ -76,22 +76,22 @@ Status values: `todo`, `partial`, `done`, `removed` (removed = taken out of the 
 | TSK-05 | C | P2 | Upcoming-deadlines panel on the dashboard | todo | |
 | TSK-06 | C | P2 | .ics export (RFC 5545 escaping and folding) | todo | |
 | TSK-07 | C | P2 | Locked dates (user-pinned) are never moved by re-flow | todo | |
-| VND-01 | C | P3 | Manual vendors with category, contact, status pipeline; **no** verified/recomm… | todo | |
-| VND-02 | C | P3 | Quote capture | todo | |
-| VND-03 | C | P3 | Normalisation to tax-inclusive true cost at the planned headcount; sensitivity… | todo | |
-| VND-04 | C | P3 | Side-by-side comparison with editable weights; expired and tax-unknown flags; … | todo | |
-| VND-05 | C | P3 | Category enquiry checklists and contract-review reminders (TEMPLATE-PACKS.md §… | todo | |
-| VND-06 | C | P3 | Accept quote → commitment + payment schedule split exactly with allocateByWeig… | todo | |
+| VND-01 | C | P3 | Manual vendors with category, contact, status pipeline; **no** verified/recomm… | done | `VendorsView` with status pipeline filter & CRUD |
+| VND-02 | C | P3 | Quote capture | done | `AddQuoteModal` with pricing model, taxes, inclusions, milestones |
+| VND-03 | C | P3 | Normalisation to tax-inclusive true cost at the planned headcount; sensitivity… | done | `normalizeQuote` normalises base, service charge, GST %; tested |
+| VND-04 | C | P3 | Side-by-side comparison with editable weights; expired and tax-unknown flags; … | done | `QuoteComparisonView` with MCDA weights & sensitivity |
+| VND-05 | C | P3 | Category enquiry checklists and contract-review reminders (TEMPLATE-PACKS.md §… | done | Dynamic checklists for catering, venue, photography |
+| VND-06 | C | P3 | Accept quote → commitment + payment schedule split exactly with allocateByWeig… | done | `ACCEPT_QUOTATION` generates commitment + milestone payments |
 | VND-07 | S | P5 | **Quote Scanner | todo | |
-| VND-08 | C | P3 | One-tap call and WhatsApp links (tel | todo | |
-| GUE-01 | C | P3 | Guest rows as invitation units (person or household) | todo | |
-| GUE-02 | C | P3 | RSVP status per function with progress (invited / replied / attending) | todo | |
-| GUE-03 | C | P3 | Headcount planner per function (low/likely/high + catering headcount); editabl… | todo | |
-| GUE-04 | C | P3 | **Catering Brief | todo | |
-| GUE-05 | C | P3 | CSV import (mapping, dedupe, preview) and export (privacy warning, formula-inj… | todo | |
-| GUE-06 | C | P3 | Invitation text with placeholders; copy; per-guest *Open in WhatsApp* link; no… | todo | |
+| VND-08 | C | P3 | One-tap call and WhatsApp links (tel | done | One-tap `tel:` and `wa.me` links in vendor directory |
+| GUE-01 | C | P3 | Guest rows as invitation units (person or household) | done | `GuestTable` renders party size, children, side, group, dietary |
+| GUE-02 | C | P3 | RSVP status per function with progress (invited / replied / attending) | done | Dropdown per sub-event in `GuestTable` with immediate dispatch |
+| GUE-03 | C | P3 | Headcount planner per function (low/likely/high + catering headcount); editabl… | done | `HeadcountPlannerView` with attendance assumptions |
+| GUE-04 | C | P3 | **Catering Brief | done | `HeadcountPlannerView` generates catering brief with print & dietary table |
+| GUE-05 | C | P3 | CSV import (mapping, dedupe, preview) and export (privacy warning, formula-inj… | done | `GuestCsvModal` with column mapping, formula guard, UTF-8 BOM |
+| GUE-06 | C | P3 | Invitation text with placeholders; copy; per-guest *Open in WhatsApp* link; no… | done | `InviteStudioModal` with personalized WhatsApp link builder |
 | GUE-07 | S | P5 | **Invite Studio | todo | |
-| GUE-08 | C | P3 | Search, filter, 100-per-page pagination | todo | |
+| GUE-08 | C | P3 | Search, filter, 100-per-page pagination | done | Paginated `GuestTable` with search, side & diet filters |
 | GUE-09 | F | P6 | Seating helper | todo | |
 | AST-01 | C | P4 | Event-aware chat; answers separate **facts (from tools)**, **estimates**, **as… | todo | |
 | AST-02 | C | P4 | Read-only tools over a PII-minimised snapshot | todo | |

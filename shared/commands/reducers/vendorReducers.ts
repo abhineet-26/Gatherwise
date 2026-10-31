@@ -1,5 +1,7 @@
 import type { WorkspaceState, BaseCommand, CommandResult } from '../types';
-import type { Vendor, Quotation, Commitment } from '../../schemas';
+import type { Vendor, Quotation, Commitment, Payment } from '../../schemas';
+import { allocateByWeights } from '../../domain/money/allocate';
+import type { IsoDate } from '../../domain/time/dates';
 
 export function handleVendorCommands(state: WorkspaceState, command: BaseCommand): CommandResult | null {
   const { type, payload } = command;
@@ -72,11 +74,21 @@ export function handleVendorCommands(state: WorkspaceState, command: BaseCommand
     }
 
     case 'ACCEPT_QUOTATION': {
-      const { quoteId, commitmentAmount } = payload as { quoteId: string; commitmentAmount: number };
+      const { quoteId, commitmentAmount, headcountAtAcceptance, scheduleSplits } = payload as {
+        quoteId: string;
+        commitmentAmount: number;
+        headcountAtAcceptance?: number;
+        scheduleSplits?: { label: string; pct: number; dueDate?: IsoDate }[];
+      };
       const quote = state.quotes.find(q => q.id === quoteId);
       if (!quote) return { nextState: state, inverse: null, summary: 'Quote not found' };
 
       const updatedQuote: Quotation = { ...quote, status: 'accepted' };
+      const vendor = state.vendors.find(v => v.id === quote.vendorId);
+      const updatedVendors = vendor
+        ? state.vendors.map(v => (v.id === vendor.id ? { ...v, status: 'booked' as const } : v))
+        : state.vendors;
+
       const newCommitment: Commitment = {
         id: `com_${quote.id}`,
         eventId: state.event.id,
@@ -85,23 +97,56 @@ export function handleVendorCommands(state: WorkspaceState, command: BaseCommand
         quotationId: quote.id,
         amount: commitmentAmount,
         status: 'active',
+        headcountAtAcceptance: headcountAtAcceptance ?? state.event.guestCount,
         title: `Accepted: ${quote.title}`,
         createdAt: new Date().toISOString(),
       };
+
+      const splits = scheduleSplits || (quote.paymentSchedule && quote.paymentSchedule.length > 0 ? quote.paymentSchedule : [
+        { label: 'Advance Deposit', pct: quote.depositPct ?? 25 },
+        { label: 'Final Settlement', pct: 100 - (quote.depositPct ?? 25) }
+      ]);
+
+      const allocatedPaise = allocateByWeights(
+        commitmentAmount as any,
+        splits.map(s => s.pct)
+      );
+
+      const generatedPayments: Payment[] = splits.map((s, idx) => ({
+        id: `pay_${quote.id}_${idx + 1}`,
+        eventId: state.event.id,
+        budgetLineId: quote.budgetLineId || 'general',
+        commitmentId: newCommitment.id,
+        amount: allocatedPaise[idx] ?? 0,
+        status: 'scheduled' as const,
+        dueDate: s.dueDate,
+        notes: `${s.label} (${s.pct}%) for ${quote.title}`,
+      }));
+
+      const paymentIds = generatedPayments.map(p => p.id);
 
       return {
         nextState: {
           ...state,
           quotes: state.quotes.map(q => (q.id === quoteId ? updatedQuote : q)),
+          vendors: updatedVendors,
           commitments: [...state.commitments, newCommitment],
+          payments: [...state.payments, ...generatedPayments],
         },
         inverse: {
           type: 'CANCEL_COMMITMENT',
           eventId: state.event.id,
-          payload: { id: newCommitment.id },
+          payload: {
+            id: newCommitment.id,
+            revertQuoteId: quote.id,
+            prevQuoteStatus: quote.status,
+            revertVendorId: vendor?.id,
+            prevVendorStatus: vendor?.status,
+            paymentIds,
+          },
           meta: { summary: `Cancel acceptance of quote ${quote.title}` },
         },
-        summary: `Accepted quote "${quote.title}" and created commitment`,
+        summary: `Accepted quote "${quote.title}" and created commitment with ${generatedPayments.length} scheduled payment(s)`,
       };
     }
 

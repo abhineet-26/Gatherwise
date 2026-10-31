@@ -79,10 +79,29 @@ export function handleBudgetCommands(state: WorkspaceState, command: BaseCommand
       const existing = state.commitments.find(c => c.id === id);
       if (!existing) return { nextState: state, inverse: null, summary: 'Commitment not found' };
 
+      const revertQuoteId = payload['revertQuoteId'] as string | undefined;
+      const prevQuoteStatus = (payload['prevQuoteStatus'] as any) || 'received';
+      const revertVendorId = payload['revertVendorId'] as string | undefined;
+      const prevVendorStatus = (payload['prevVendorStatus'] as any) || 'shortlisted';
+      const paymentIds = payload['paymentIds'] as string[] | undefined;
+
+      const quotes = revertQuoteId
+        ? state.quotes.map(q => (q.id === revertQuoteId ? { ...q, status: prevQuoteStatus } : q))
+        : state.quotes;
+      const vendors = revertVendorId
+        ? state.vendors.map(v => (v.id === revertVendorId ? { ...v, status: prevVendorStatus } : v))
+        : state.vendors;
+      const payments = paymentIds && paymentIds.length > 0
+        ? state.payments.filter(p => !paymentIds.includes(p.id))
+        : state.payments;
+
       return {
         nextState: {
           ...state,
           commitments: state.commitments.map(c => (c.id === id ? { ...c, status: 'cancelled' as const } : c)),
+          quotes,
+          vendors,
+          payments,
         },
         inverse: {
           type: 'ADD_COMMITMENT',

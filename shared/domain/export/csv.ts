@@ -22,3 +22,18 @@ export function buildCsv(headers: string[], rows: (string | number | boolean | n
   const rowLines = rows.map(row => row.map(cell => sanitizeCsvCell(cell)).join(','));
   return [headerLine, ...rowLines].join('\r\n');
 }
+
+export function exportGuestsToCsv(guests: readonly any[]): string {
+  const headers = ['Name', 'Phone', 'Party Size', 'Dietary', 'Side', 'Group', 'Accessibility', 'Notes'];
+  const rows = guests.map(g => [
+    g.name,
+    g.phone || g.contact?.phone || '',
+    g.partySize ?? 1,
+    Array.isArray(g.dietary) ? g.dietary.join('; ') : (g.dietary || 'veg'),
+    g.side || 'shared',
+    g.group || '',
+    g.accessibilityNote || (Array.isArray(g.accessibility) ? g.accessibility.join('; ') : (g.accessibility || '')),
+    g.notes || '',
+  ]);
+  return '\uFEFF' + buildCsv(headers, rows);
+}
