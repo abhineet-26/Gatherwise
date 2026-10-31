@@ -22,9 +22,10 @@ export const GuestSchema = z.object({
     phone: z.string().max(20).optional(),
     email: z.string().email().optional().or(z.literal('')),
   }).default({}),
+  phone: z.string().max(25).optional(),
   inviteSent: z.enum(['not_sent', 'sent']).default('not_sent'),
   invitations: z.record(SubEventInvitationSchema).default({}),
-  dietary: z.array(DietTagSchema).default([]),
+  dietary: z.union([z.string(), z.array(DietTagSchema)]).default([]),
   accessibility: z.array(AccessTagSchema).default([]),
   accessibilityNote: z.string().max(200).optional(),
   table: z.string().max(40).optional(),
@@ -33,4 +34,4 @@ export const GuestSchema = z.object({
   message: 'Children counts cannot exceed total party size (INV-06)',
 });
 
-export type Guest = z.infer<typeof GuestSchema>;
+export type Guest = z.input<typeof GuestSchema>;

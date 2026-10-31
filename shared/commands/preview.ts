@@ -1,7 +1,7 @@
 import type { WorkspaceState, BaseCommand } from './types';
 import { reduceCommand } from './reducer';
 import { computeBudgetSummary, type BudgetSummary } from '../domain/budget/budget';
-import { type IsoDate } from '../domain/time/dates';
+import { type IsoDate, asIsoDate } from '../domain/time/dates';
 import { minor } from '../domain/money/money';
 
 export interface ImpactPreview {
@@ -21,7 +21,7 @@ export function previewImpact(
 ): ImpactPreview {
   const mapBudgetInput = (ws: WorkspaceState) => ({
     target: minor(ws.event.budgetTarget),
-    contingencyPct: ws.event.contingencyPct,
+    contingencyPct: ws.event.contingencyPct ?? 7,
     lines: ws.budgetLines.map(b => ({
       id: b.id,
       category: b.category,
@@ -37,13 +37,13 @@ export function previewImpact(
       })),
     payments: ws.payments.map(p => ({
       id: p.id,
-      budgetLineId: p.budgetLineId,
+      budgetLineId: p.budgetLineId || 'general',
       commitmentId: p.commitmentId,
       kind: (p.isRefund ? 'refund' : 'expense') as 'refund' | 'expense',
       amount: minor(p.amount),
       status: (p.status === 'paid' ? 'paid' : p.status === 'cancelled' ? 'cancelled' : 'planned') as 'planned' | 'paid' | 'cancelled',
-      dueDate: p.dueDate,
-      paidDate: p.paidDate,
+      dueDate: p.dueDate ? asIsoDate(p.dueDate) : undefined,
+      paidDate: p.paidDate ? asIsoDate(p.paidDate) : undefined,
     })),
     today,
   });

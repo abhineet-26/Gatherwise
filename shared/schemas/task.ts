@@ -14,6 +14,8 @@ export const TaskSchema = z.object({
   priority: TaskPrioritySchema.default('medium'),
   dueDate: IsoDateSchema,
   dueDateLocked: z.boolean().default(false),
+  isLocked: z.boolean().optional(),
+  completedAt: z.string().optional(),
   status: TaskStatusSchema.default('todo'),
   assignee: z.string().max(60).optional(),
   dependsOn: z.array(z.string()).default([]),
@@ -31,6 +33,7 @@ export const TaskSchema = z.object({
     minLeadDays: z.number().int().nonnegative(),
   }).optional(),
   whyExplanation: z.string().max(300).optional(),
+  whyThis: z.string().max(300).optional(),
 });
 
-export type Task = z.infer<typeof TaskSchema>;
+export type Task = z.input<typeof TaskSchema>;

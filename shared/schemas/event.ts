@@ -16,7 +16,7 @@ export const VenueStatusSchema = z.enum([
   'open_ground',
 ]);
 
-export const SettingSchema = z.enum(['indoor', 'outdoor', 'mixed']);
+export const SettingSchema = z.enum(['indoor', 'outdoor', 'mixed', 'home']);
 
 export const CityTierSchema = z.enum(['tier1', 'tier2', 'tier3', 'other', 'unspecified']);
 export type CityTier = z.infer<typeof CityTierSchema>;
@@ -73,6 +73,9 @@ export const EventSchema = z.object({
   venueStatus: VenueStatusSchema.default('not_started'),
   setting: SettingSchema.default('indoor'),
   budgetTarget: z.number().int().nonnegative(),
+  budget: z.number().int().nonnegative().optional(),
+  guestCount: z.number().int().nonnegative().default(100),
+  notes: z.string().max(500).optional(),
   contingencyPct: z.number().min(0).max(50).default(7),
   fundingMode: z.enum(['self_funded', 'sponsored']).default('self_funded'),
   attendanceModel: z.enum(['invite_list', 'open_footfall']).default('invite_list'),
@@ -101,4 +104,4 @@ export const EventSchema = z.object({
   updatedAt: z.string().datetime().default(() => new Date().toISOString()),
 });
 
-export type Event = z.infer<typeof EventSchema>;
+export type Event = z.input<typeof EventSchema>;

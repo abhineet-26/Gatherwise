@@ -7,10 +7,10 @@
 | Field | Value |
 | --- | --- |
 | Scope profile | **Standard** (Phases 0-5 and 7; see PRD §6) |
-| Current phase | Phase 2 (Core Workspace UI) |
+| Current phase | Phase 3 (Vendors, Quotes, Guests) |
 | Last updated | 2026-11-01 |
-| Last `npm run check` | 2026-11-01: typecheck clean, 16 test files (117 tests) pass, build clean (dist/client 55 KB gzip JS) |
-| Repo size / branches | Tracked files: ~590 KB (< 10 MB limit), branch: main |
+| Last `npm run check` | 2026-11-01: typecheck clean, 18 test files (123 tests) pass, build clean (dist/client 92.3 KB gzip JS) |
+| Repo size / branches | Tracked files: ~650 KB (< 10 MB limit), branch: main |
 
 ## Phase ledger
 
@@ -18,7 +18,7 @@
 | --- | --- | --- | --- | --- |
 | P0 | Foundation: scaffold, tooling, CI, tokens, shell, ports, kernel tests green, architecture tests | done | `npm run check` → 10 files (93 tests) passed; `GET /api/health` → `{ai:false, weather:true, cloud:false}` (2026-11-01) | Baseline JS bundle 55 KB gzip (budget 180 KB) |
 | P1 | Domain: schemas, commands, undo, planning engine, readiness, risks | done | `npm run check` → 16 files (117 tests) passed (2026-11-01) | Pure domain, reversible commands, wedding/birthday/community packs |
-| P2 | Core UI: wizard, dashboard, tasks, budget, payments, exports, demo + Time Travel | in_progress | | |
+| P2 | Core UI: wizard, dashboard, tasks, budget, payments, exports, demo + Time Travel | done | `npm run check` → 18 files (123 tests) passed; IndexedDB local repo + store contract tests pass (2026-11-01) | 6-step wizard, Readiness Bloom, stacked budget bar, 3 task views, time travel demo, 50-item undo |
 | P3 | Vendors, quotes, guests, headcount, catering brief | todo | | |
 | P4 | AI copilot, tools, proposals, fallback, Idea Studio | todo | | |
 | P5 | What-if Lab, weather, quote scanner, invite studio, contingency, drift | todo | | |
@@ -29,12 +29,12 @@
 
 | Journey | Date | Result | Notes |
 | --- | --- | --- | --- |
-| J1 First plan in minutes | | not run | |
-| J2 Money truth | | not run | |
-| J3 Compare caterers | | not run | |
-| J4 Plans change (assistant + proposal + undo) | | not run | |
-| J5 RSVP to caterer | | not run | |
-| J6 Time pressure (Time Travel) | | not run | |
+| J1 First plan in minutes | 2026-11-01 | pass | Wizard creates multi-function event, generates tasks/budget/risks from pack, preview before applying |
+| J2 Money truth | 2026-11-01 | pass | Safe integer paise math, contingency % split, stacked bar + table, payment log & overdue alerts |
+| J3 Compare caterers | | not run | Scheduled for Phase 3 |
+| J4 Plans change (assistant + proposal + undo) | | not run | Scheduled for Phase 4 |
+| J5 RSVP to caterer | | not run | Scheduled for Phase 3 |
+| J6 Time pressure (Time Travel) | 2026-11-01 | pass | Demo scrubber with T-60 to T-0 time travel recalculates bloom, budget, and overdue items |
 | J7 Rain on the parade | | not run | |
 | J8 Day-of (Full) | | not run | |
 | J9 Sponsors (Full) | | not run | |

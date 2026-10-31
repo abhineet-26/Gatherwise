@@ -113,7 +113,7 @@ export function handleTaskAndEventCommands(state: WorkspaceState, command: BaseC
           ...state,
           tasks: state.tasks
             .filter(t => t.id !== id)
-            .map(t => ({ ...t, dependsOn: t.dependsOn.filter(depId => depId !== id) })),
+            .map(t => ({ ...t, dependsOn: (t.dependsOn || []).filter(depId => depId !== id) })),
         },
         inverse: {
           type: 'ADD_TASK',

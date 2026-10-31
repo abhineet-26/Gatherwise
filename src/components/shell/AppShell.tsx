@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { DemoBanner } from '../demo/DemoBanner';
 import {
   LayoutDashboard,
   Calendar,
@@ -74,15 +75,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   return (
     <div className="min-h-screen bg-gw-paper text-gw-ink-900 flex flex-col antialiased">
       {/* Top Demo Banner */}
-      <div className="bg-gw-indigo-700 text-white text-xs px-4 py-1.5 flex items-center justify-between font-medium z-50">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-gw-marigold-400 animate-pulse"></span>
-          <span>Demo Mode — All data is stored locally in this browser.</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="opacity-90">Assistant: {aiEnabled ? 'Gemini 3.8 Flash' : 'Built-in Engine'}</span>
-        </div>
-      </div>
+      <DemoBanner />
 
       <div className="flex flex-1 relative">
         {/* Desktop Sidebar (Left Rail) */}

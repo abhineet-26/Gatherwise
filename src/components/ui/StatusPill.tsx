@@ -4,7 +4,8 @@ import clsx from 'clsx';
 export type StatusPillVariant = 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'accent';
 
 export interface StatusPillProps {
-  label: string;
+  label?: string;
+  children?: React.ReactNode;
   variant?: StatusPillVariant;
   icon?: React.ReactNode;
   size?: 'sm' | 'md';
@@ -13,6 +14,7 @@ export interface StatusPillProps {
 
 export const StatusPill: React.FC<StatusPillProps> = ({
   label,
+  children,
   variant = 'neutral',
   icon,
   size = 'md',
@@ -42,7 +44,7 @@ export const StatusPill: React.FC<StatusPillProps> = ({
       )}
     >
       {icon && <span className="shrink-0">{icon}</span>}
-      <span>{label}</span>
+      {children ? children : label ? <span>{label}</span> : null}
     </span>
   );
 };

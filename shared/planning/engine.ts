@@ -1,6 +1,6 @@
 import type { Event, Task, BudgetLine, SubEvent, Risk } from '../schemas';
 import type { TemplatePack } from './types';
-import { type IsoDate, daysBetween } from '../domain/time/dates';
+import { type IsoDate, asIsoDate, daysBetween } from '../domain/time/dates';
 import { percentOf, minor } from '../domain/money/money';
 import { allocateByWeights } from '../domain/money/allocate';
 import { planTaskDates, type PlannedTask } from '../domain/tasks/schedule';
@@ -19,7 +19,7 @@ export function generatePlan(
   today: IsoDate
 ): GeneratedPlan {
   // 1. Budget Lines allocation
-  const contingency = percentOf(minor(event.budgetTarget), event.contingencyPct);
+  const contingency = percentOf(minor(event.budgetTarget), event.contingencyPct ?? 7);
   const spendable = minor(event.budgetTarget - contingency);
 
   const profile = pack.budgetProfiles.standard;
@@ -73,7 +73,7 @@ export function generatePlan(
       minLeadDays: t.minLeadDays,
       dependsOn: t.after || [],
     })),
-    { eventDate: event.date, today }
+    { eventDate: asIsoDate(event.date), today }
   );
 
   const scheduledMap = new Map<string, PlannedTask>(scheduled.map(s => [s.id, s]));
@@ -106,13 +106,13 @@ export function generatePlan(
   });
 
   const infeasibleTasks = tasks.filter(t => {
-    const origId = t.origin.templateId;
+    const origId = t.origin?.kind === 'template' ? t.origin.templateId : undefined;
     const s = origId ? scheduledMap.get(origId) : undefined;
     return s?.feasibility === 'infeasible';
   });
 
   // 4. Initial Risk Evaluation
-  const daysToEvent = daysBetween(today, event.date);
+  const daysToEvent = daysBetween(today, asIsoDate(event.date));
   const risks: Risk[] = [];
 
   for (const rule of pack.riskRules) {

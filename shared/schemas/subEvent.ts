@@ -20,6 +20,8 @@ export const SubEventSchema = z.object({
   startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).optional(),
   endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).optional(),
   venueLabel: z.string().max(100).optional(),
+  venue: z.string().max(100).optional(),
+  expectedGuestCount: z.number().int().nonnegative().optional(),
   dressCode: z.string().max(80).optional(),
   headcountMode: z.enum(['from_guests', 'manual']).default('from_guests'),
   manualHeadcount: z.number().int().nonnegative().optional(),
@@ -27,4 +29,4 @@ export const SubEventSchema = z.object({
   notes: z.string().max(500).optional(),
 });
 
-export type SubEvent = z.infer<typeof SubEventSchema>;
+export type SubEvent = z.input<typeof SubEventSchema>;

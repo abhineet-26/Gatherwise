@@ -50,11 +50,11 @@ export function handleGuestAndRiskCommands(state: WorkspaceState, command: BaseC
       const guest = state.guests.find(g => g.id === guestId);
       if (!guest) return { nextState: state, inverse: null, summary: 'Guest not found' };
 
-      const prevInv = guest.invitations[subEventId] || { invited: true, status: 'pending' };
+      const prevInv = guest.invitations?.[subEventId] || { invited: true, status: 'pending' };
       const updatedGuest: Guest = {
         ...guest,
         invitations: {
-          ...guest.invitations,
+          ...(guest.invitations || {}),
           [subEventId]: { invited: true, status, confirmedParty },
         },
       };

@@ -217,9 +217,9 @@ describe('Commands Reducer & Invertibility', () => {
     };
 
     const s2 = reduceCommand(s1, rsvpCmd);
-    expect(s2.nextState.guests[0]?.invitations['se-reception']?.status).toBe('attending');
+    expect(s2.nextState.guests[0]?.invitations?.['se-reception']?.status).toBe('attending');
 
     const undone = reduceCommand(s2.nextState, s2.inverse!);
-    expect(undone.nextState.guests[0]?.invitations['se-reception']?.status).toBe('pending');
+    expect(undone.nextState.guests[0]?.invitations?.['se-reception']?.status).toBe('pending');
   });
 });

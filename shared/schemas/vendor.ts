@@ -23,15 +23,16 @@ export const VendorSchema = z.object({
     email: z.string().email().optional().or(z.literal('')),
   }).default({}),
   city: z.string().max(60).optional(),
+  contactPhone: z.string().max(30).optional(),
   notes: z.string().max(500).default(''),
   userRating: z.number().min(0).max(5).optional(),
 });
 
-export type Vendor = z.infer<typeof VendorSchema>;
+export type Vendor = z.input<typeof VendorSchema>;
 
 export const PricingModelSchema = z.enum(['fixed', 'per_head', 'per_unit']);
 export const TaxModeSchema = z.enum(['inclusive', 'exclusive', 'unknown']);
-export const QuoteStatusSchema = z.enum(['received', 'shortlisted', 'accepted', 'rejected']);
+export const QuoteStatusSchema = z.enum(['received', 'shortlisted', 'accepted', 'rejected', 'pending', 'quoted']);
 
 export const QuotationSchema = z.object({
   id: z.string().min(1),
@@ -39,11 +40,16 @@ export const QuotationSchema = z.object({
   vendorId: z.string().min(1),
   budgetLineId: z.string().optional(),
   title: z.string().min(1).max(80),
+  structure: z.string().optional(),
+  basePrice: z.number().optional(),
+  taxInclusive: z.boolean().optional(),
+  taxPercent: z.number().optional(),
+  minGuests: z.number().optional(),
   pricing: z.object({
     model: PricingModelSchema,
     baseAmount: z.number().int().nonnegative(),
     quantity: z.number().int().positive().optional(),
-  }),
+  }).optional(),
   taxMode: TaxModeSchema.default('exclusive'),
   gstPct: z.number().min(0).max(40).optional(),
   serviceChargePct: z.number().min(0).max(30).optional(),
@@ -63,4 +69,4 @@ export const QuotationSchema = z.object({
   notes: z.string().max(500).default(''),
 });
 
-export type Quotation = z.infer<typeof QuotationSchema>;
+export type Quotation = z.input<typeof QuotationSchema>;

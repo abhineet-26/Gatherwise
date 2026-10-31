@@ -1,6 +1,6 @@
 import type { Task, BudgetLine, Commitment, Payment, Guest, Risk } from '../../schemas';
 import type { EssentialDef } from '../../planning/types';
-import { type IsoDate, daysBetween } from '../time/dates';
+import { type IsoDate, asIsoDate, daysBetween } from '../time/dates';
 import { computeBudgetSummary } from '../budget/budget';
 import { minor } from '../money/money';
 
@@ -42,12 +42,13 @@ export function computeReadiness(input: {
   const daysToEvent = daysBetween(today, eventDate);
 
   // 1. Tasks (35 pts)
-  const taskWeight = (p: Task['priority']) => {
+  const taskWeight = (p?: Task['priority']) => {
     switch (p) {
       case 'critical': return 3;
       case 'high': return 2;
       case 'medium': return 1;
       case 'low': return 0.5;
+      default: return 1;
     }
   };
 
@@ -104,13 +105,13 @@ export function computeReadiness(input: {
     })),
     payments: payments.map(p => ({
       id: p.id,
-      budgetLineId: p.budgetLineId,
+      budgetLineId: p.budgetLineId || 'general',
       commitmentId: p.commitmentId,
       kind: (p.isRefund ? 'refund' : 'expense') as 'refund' | 'expense',
       amount: minor(p.amount),
       status: (p.status === 'paid' ? 'paid' : p.status === 'cancelled' ? 'cancelled' : 'planned') as 'planned' | 'paid' | 'cancelled',
-      dueDate: p.dueDate,
-      paidDate: p.paidDate,
+      dueDate: p.dueDate ? asIsoDate(p.dueDate) : undefined,
+      paidDate: p.paidDate ? asIsoDate(p.paidDate) : undefined,
     })),
     today,
   });
@@ -124,14 +125,14 @@ export function computeReadiness(input: {
   const expectedMoneyScore = Math.max(0, expectedCoverage * healthFactor) * 20;
 
   // 4. Guests (10 pts)
-  const totalInvited = guests.reduce((sum, g) => sum + g.partySize, 0);
+  const totalInvited = guests.reduce((sum, g) => sum + (g.partySize ?? 1), 0);
   let guestScore = 10;
   let expectedGuestScore = 10;
 
   if (totalInvited > 0) {
-    const invitesSent = guests.filter(g => g.inviteSent === 'sent').reduce((sum, g) => sum + g.partySize, 0);
-    const repliesReceived = guests.filter(g => Object.values(g.invitations).some(i => i.status !== 'pending'))
-      .reduce((sum, g) => sum + g.partySize, 0);
+    const invitesSent = guests.filter(g => g.inviteSent === 'sent').reduce((sum, g) => sum + (g.partySize ?? 1), 0);
+    const repliesReceived = guests.filter(g => Object.values(g.invitations || {}).some(i => i.status !== 'pending'))
+      .reduce((sum, g) => sum + (g.partySize ?? 1), 0);
 
     const sentShare = invitesSent / totalInvited;
     const replyShare = repliesReceived / totalInvited;
@@ -172,7 +173,7 @@ export function computeReadiness(input: {
   const candidates: { title: string; gain: number; effort: 'S' | 'M' | 'L' }[] = [];
   const todoCritical = tasks.filter(t => t.status === 'todo' && t.priority === 'critical');
   for (const t of todoCritical.slice(0, 2)) {
-    candidates.push({ title: `Complete: ${t.title}`, gain: 3.5, effort: t.effort });
+    candidates.push({ title: `Complete: ${t.title}`, gain: 3.5, effort: t.effort || 'M' });
   }
 
   for (const ess of essentials) {
