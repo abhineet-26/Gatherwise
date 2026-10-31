@@ -1,5 +1,7 @@
 import express, { type Express } from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import { requestId } from './middleware/requestId';
 import { securityHeaders } from './middleware/security';
 import { createRateLimiter } from './middleware/rateLimit';
@@ -33,6 +35,18 @@ export function createApp(deps: AppDependencies = {}): Express {
   app.use('/api/health', createHealthRouter());
   app.use('/api/ai', createAiRouter(deps.aiOrchestrator));
   app.use('/api/weather', createWeatherRouter());
+
+  // Serve static client bundle if built (production mode)
+  const clientDist = path.resolve(__dirname, '../client');
+  const rootClientDist = path.resolve(__dirname, '../../dist/client');
+  const targetDist = fs.existsSync(clientDist) ? clientDist : fs.existsSync(rootClientDist) ? rootClientDist : null;
+  if (targetDist) {
+    app.use(express.static(targetDist));
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api')) return next();
+      res.sendFile(path.join(targetDist, 'index.html'));
+    });
+  }
 
   // Error handling
   app.use(errorHandler);
