@@ -7,18 +7,18 @@
 | Field | Value |
 | --- | --- |
 | Scope profile | **Standard** (Phases 0-5 and 7; see PRD §6) |
-| Current phase | Phase 1 (Domain, commands, planning engine) |
+| Current phase | Phase 2 (Core Workspace UI) |
 | Last updated | 2026-11-01 |
-| Last `npm run check` | 2026-11-01: typecheck clean, 10 test files (93 tests) pass, build clean (dist/client 55 KB gzip JS) |
-| Repo size / branches | Tracked files: 560 KB (< 10 MB limit), branch: main |
+| Last `npm run check` | 2026-11-01: typecheck clean, 16 test files (117 tests) pass, build clean (dist/client 55 KB gzip JS) |
+| Repo size / branches | Tracked files: ~590 KB (< 10 MB limit), branch: main |
 
 ## Phase ledger
 
 | Phase | Scope | Status | Evidence (command → result, date) | Notes |
 | --- | --- | --- | --- | --- |
 | P0 | Foundation: scaffold, tooling, CI, tokens, shell, ports, kernel tests green, architecture tests | done | `npm run check` → 10 files (93 tests) passed; `GET /api/health` → `{ai:false, weather:true, cloud:false}` (2026-11-01) | Baseline JS bundle 55 KB gzip (budget 180 KB) |
-| P1 | Domain: schemas, commands, undo, planning engine, readiness, risks | todo | | |
-| P2 | Core UI: wizard, dashboard, tasks, budget, payments, exports, demo + Time Travel | todo | | |
+| P1 | Domain: schemas, commands, undo, planning engine, readiness, risks | done | `npm run check` → 16 files (117 tests) passed (2026-11-01) | Pure domain, reversible commands, wedding/birthday/community packs |
+| P2 | Core UI: wizard, dashboard, tasks, budget, payments, exports, demo + Time Travel | in_progress | | |
 | P3 | Vendors, quotes, guests, headcount, catering brief | todo | | |
 | P4 | AI copilot, tools, proposals, fallback, Idea Studio | todo | | |
 | P5 | What-if Lab, weather, quote scanner, invite studio, contingency, drift | todo | | |
@@ -54,12 +54,12 @@ Status values: `todo`, `partial`, `done`, `removed` (removed = taken out of the 
 | EVT-07 | S | P5 | Date assist | todo | |
 | EVT-08 | C | P2 | Changing the date proposes a re-flow of unlocked tasks (old → new diff) for ap… | todo | |
 | EVT-09 | C | P2 | Delete event with confirmation, export-first prompt and session undo; switch b… | todo | |
-| PLN-01 | C | P1 | generatePlan(event, pack, today) returns tasks, budget lines, risks, vendor ca… | todo | |
-| PLN-02 | C | P1 | Schedule compression for short timelines; infeasible tasks flagged and turned … | todo | |
-| PLN-03 | C | P1 | Each generated item carries a "Why this?" explanation naming its inputs | todo | |
-| PLN-04 | C | P1 | Budget profiles (standard/lean) allocate exactly (largest remainder); per-gues… | todo | |
-| PLN-05 | C | P1 | Outstanding-decisions list (venue, catering style, accommodation, rain plan…) … | todo | |
-| PLN-06 | C | P1 | Packs are data | todo | |
+| PLN-01 | C | P1 | generatePlan(event, pack, today) returns tasks, budget lines, risks, vendor ca… | done | `npm test` → 6 tests in `shared/planning/engine.test.ts` pass |
+| PLN-02 | C | P1 | Schedule compression for short timelines; infeasible tasks flagged and turned … | done | `npm test` → compressed schedule test passes |
+| PLN-03 | C | P1 | Each generated item carries a "Why this?" explanation naming its inputs | done | `npm test` → whyThis presence verified on tasks & budget lines |
+| PLN-04 | C | P1 | Budget profiles (standard/lean) allocate exactly (largest remainder); per-gues… | done | `npm test` → 7 tests in `shared/domain/money/allocate.test.ts` pass |
+| PLN-05 | C | P1 | Outstanding-decisions list (venue, catering style, accommodation, rain plan…) … | done | `npm test` → engine returns structured decisions list |
+| PLN-06 | C | P1 | Packs are data | done | Wedding, Birthday, Community pure data packs in `shared/planning/packs/` |
 | BUD-01 | C | P2 | Budget lines with low/likely/high estimates and a basis badge (template / your… | todo | |
 | BUD-02 | C | P2 | Commitments from accepted quotes; payments with mode (UPI, cash, bank, cheque,… | todo | |
 | BUD-03 | C | P2 | Summary exactly per DOMAIN-MODEL.md §5.1 | todo | |
@@ -116,7 +116,7 @@ Status values: `todo`, `partial`, `done`, `removed` (removed = taken out of the 
 | DEM-02 | C | P2 | **Time Travel** (demo only) | todo | |
 | DEM-03 | C | P2 | Persistent "Demo — stored only in this browser" banner and Reset | todo | |
 | SYS-01 | C | P0 | Zero-config boot; capability flags from /api/health; clear banners when AI/wea… | todo | |
-| SYS-02 | C | P1 | **Activity log and Undo** (last 50 commands) | todo | |
+| SYS-02 | C | P1 | **Activity log and Undo** (last 50 commands) | done | `npm test` → 6 tests in `shared/commands/reducer.test.ts` pass |
 | SYS-03 | C | P0 | CI workflow and verify-submission.sh | todo | |
 | SYS-04 | S | P7 | Installable PWA; core features work offline | todo | |
 | SYS-05 | F | P6 | Firebase Auth (Google) + Firestore adapter + rules; **only reported as working… | todo | |
