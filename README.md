@@ -18,7 +18,7 @@
 
 ---
 
-## 🌸 Overview
+## 🌸 Vertical and Overview
 
 GatherWise is an execution-first planning workspace for Indian celebrations. It supports three core planning contexts:
 
@@ -39,7 +39,7 @@ Organisers face:
 
 ---
 
-## 🧭 Approach and logic
+## 🧭 Approach and How It Works
 
 GatherWise is built on three strict architectural rules visible directly in the code:
 
@@ -340,6 +340,16 @@ Well below the 180 kB performance budget specified in `docs/ARCHITECTURE.md` §1
 ### Paginated reads
 
 Guest tables and activity logs are paginated in memory and storage to prevent DOM degradation on large lists.
+
+---
+
+## 📝 Assumptions and Heuristics
+
+- Planning heuristics (lead times, category percentage allocations, attendance drop-off rates) are **editable baseline heuristics** based on documented Indian event benchmarks (`docs/BENCHMARKS.md`), not rigid universal rules.
+- GST rates (18% for catering, photography, venues) and local municipal sound/fire permit notices are advisory; GatherWise provides planning assistance, not legal or tax counsel.
+- Vendor profiles, pricing options, and availability are entered and managed by the user; the platform does not aggregate third-party vendor directories without user input.
+- Demo mode operates strictly client-side using browser-local IndexedDB (`gatherwise-demo`); no user data is transmitted to external servers except sanitized AI context when explicitly interacting with Copilot.
+- Open-Meteo geocoding defaults to verified coordinates for major Indian metro regions with a 3-hour memory cache.
 
 ---
 
