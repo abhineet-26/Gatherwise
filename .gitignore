@@ -41,6 +41,15 @@ gatherwise-export*.json
 # Spec archive
 files/
 
+# Agent skills, instructions, and configuration files
+.agents/
+AGENTS.md
+GEMINI.md
+CLAUDE.md
+
+# Specification and documentation files
+docs/
+
 # Python
 venv/
 .venv/
