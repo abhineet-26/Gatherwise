@@ -1,15 +1,30 @@
 #!/usr/bin/env node
 import { spawn } from 'child_process';
+import fs from 'fs';
 
-// Starts both API server and Vite client concurrently for zero-config dev
-const server = spawn('npx', ['tsx', 'watch', 'server/index.ts'], {
-  stdio: 'inherit',
-  env: { ...process.env, PORT: process.env.PORT || '3001' },
-});
+const usePython = process.env.BACKEND_TYPE !== 'node' && fs.existsSync('.venv/bin/uvicorn');
+
+let server;
+if (usePython) {
+  console.log('🐍 Starting Python FastAPI Backend on http://localhost:8000...');
+  server = spawn('.venv/bin/uvicorn', ['backend.app.main:app', '--reload', '--port', '8000'], {
+    stdio: 'inherit',
+    env: { ...process.env, PORT: '8000' },
+  });
+} else {
+  console.log('🟢 Starting Node.js Express Backend on http://localhost:3001...');
+  server = spawn('npx', ['tsx', 'watch', 'server/index.ts'], {
+    stdio: 'inherit',
+    env: { ...process.env, PORT: process.env.PORT || '3001' },
+  });
+}
 
 const client = spawn('npx', ['vite'], {
   stdio: 'inherit',
-  env: process.env,
+  env: {
+    ...process.env,
+    API_TARGET: usePython ? 'http://localhost:8000' : 'http://localhost:3001',
+  },
 });
 
 function cleanup() {

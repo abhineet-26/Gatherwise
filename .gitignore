@@ -40,3 +40,11 @@ gatherwise-export*.json
 
 # Spec archive
 files/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
