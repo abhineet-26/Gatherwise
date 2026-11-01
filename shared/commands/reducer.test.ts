@@ -222,4 +222,50 @@ describe('Commands Reducer & Invertibility', () => {
     const undone = reduceCommand(s2.nextState, s2.inverse!);
     expect(undone.nextState.guests[0]?.invitations?.['se-reception']?.status).toBe('pending');
   });
+
+  it('proves invertibility of run-of-show and funding commands', () => {
+    const state = createInitialState();
+
+    const addRosCmd: BaseCommand = {
+      type: 'ADD_RUN_OF_SHOW_ITEM',
+      eventId: state.event.id,
+      payload: {
+        id: 'ros-1',
+        subEventId: 'se-1',
+        title: 'Baraat Arrival',
+        startTime: '17:00',
+        durationMinutes: 45,
+        endTime: '17:45',
+        bufferAfterMinutes: 15,
+        isFixedTime: false,
+        owner: 'Groom Family',
+        status: 'upcoming',
+      },
+    };
+
+    const s1 = reduceCommand(state, addRosCmd);
+    expect(s1.nextState.runOfShow?.length).toBe(1);
+
+    const undoneRos = reduceCommand(s1.nextState, s1.inverse!);
+    expect(undoneRos.nextState.runOfShow?.length).toBe(0);
+
+    const addFundingCmd: BaseCommand = {
+      type: 'ADD_FUNDING_SOURCE',
+      eventId: state.event.id,
+      payload: {
+        id: 'f-1',
+        name: 'TechSponsor',
+        kind: 'sponsor',
+        stage: 'confirmed',
+        amountPaise: 50000000,
+        isInKind: false,
+      },
+    };
+
+    const s2 = reduceCommand(state, addFundingCmd);
+    expect(s2.nextState.funding?.length).toBe(1);
+
+    const undoneFunding = reduceCommand(s2.nextState, s2.inverse!);
+    expect(undoneFunding.nextState.funding?.length).toBe(0);
+  });
 });

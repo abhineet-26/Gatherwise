@@ -3,6 +3,7 @@ import { handleTaskAndEventCommands } from './reducers/taskReducers';
 import { handleBudgetCommands } from './reducers/budgetReducers';
 import { handleVendorCommands } from './reducers/vendorReducers';
 import { handleGuestAndRiskCommands } from './reducers/guestReducers';
+import { handleExecutionCommands } from './reducers/executionReducers';
 
 export function reduceCommand(state: WorkspaceState, command: BaseCommand): CommandResult {
   const taskOrEventRes = handleTaskAndEventCommands(state, command);
@@ -16,6 +17,9 @@ export function reduceCommand(state: WorkspaceState, command: BaseCommand): Comm
 
   const guestOrRiskRes = handleGuestAndRiskCommands(state, command);
   if (guestOrRiskRes) return guestOrRiskRes;
+
+  const executionRes = handleExecutionCommands(state, command);
+  if (executionRes) return executionRes;
 
   return {
     nextState: state,

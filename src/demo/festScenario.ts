@@ -149,6 +149,12 @@ export function createFestScenario(inputToday: string | IsoDate): { id: string; 
         mitigationPlan: 'Submit formal dean letter to city commissioner office',
       },
     ],
+    funding: [
+      { id: 'f-tech', name: 'Infosys Campus Connect', kind: 'sponsor', stage: 'received', amountPaise: inr(250000), isInKind: false, contactName: 'Rajesh Verma', deliverables: [{ id: 'd-1', title: 'Main Stage Backdrop Logo', isCompleted: true }] },
+      { id: 'f-hub', name: 'Nagpur Innovation Hub', kind: 'grant', stage: 'confirmed', amountPaise: inr(150000), isInKind: false, contactName: 'Sneha Deshmukh', deliverables: [{ id: 'd-2', title: 'Dean Welcome Address', isCompleted: false }] },
+      { id: 'f-cloud', name: 'CloudScale AI Partner', kind: 'sponsor', stage: 'verbal', amountPaise: inr(100000), isInKind: false },
+      { id: 'f-bev', name: 'Energy Drinks Partner', kind: 'sponsor', stage: 'confirmed', amountPaise: inr(40000), isInKind: true },
+    ],
     activity: [
       {
         id: 'act-fest-init',

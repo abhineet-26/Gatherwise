@@ -11,6 +11,8 @@ import type {
   Risk,
   ActivityEntry,
 } from '../schemas';
+import type { RunOfShowItem } from '../domain/runofshow/types';
+import type { FundingSource } from '../domain/funding/types';
 
 export interface WorkspaceState {
   event: Event;
@@ -24,6 +26,8 @@ export interface WorkspaceState {
   guests: Guest[];
   risks: Risk[];
   activity: ActivityEntry[];
+  runOfShow?: RunOfShowItem[];
+  funding?: FundingSource[];
 }
 
 export type CommandType =
@@ -57,7 +61,14 @@ export type CommandType =
   | 'UPDATE_GUEST'
   | 'SET_RSVP'
   | 'DELETE_GUEST'
-  | 'UPDATE_RISK_STATUS';
+  | 'UPDATE_RISK_STATUS'
+  | 'ADD_RUN_OF_SHOW_ITEM'
+  | 'UPDATE_RUN_OF_SHOW_ITEM'
+  | 'APPLY_RUN_OF_SHOW_DELAY'
+  | 'DELETE_RUN_OF_SHOW_ITEM'
+  | 'ADD_FUNDING_SOURCE'
+  | 'UPDATE_FUNDING_SOURCE'
+  | 'DELETE_FUNDING_SOURCE';
 
 export interface BaseCommand {
   type: CommandType;

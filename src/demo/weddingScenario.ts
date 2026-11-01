@@ -352,6 +352,12 @@ export function createWeddingScenario(inputToday: string | IsoDate): { id: strin
         mitigationPlan: 'Quote canopy cover option with Shree Decorators by Friday',
       },
     ],
+    runOfShow: [
+      { id: 'ros-baraat', subEventId: 'sub-wedding', title: 'Baraat Assembly & Procession', startTime: '16:00', durationMinutes: 60, endTime: '17:00', bufferAfterMinutes: 15, isFixedTime: false, owner: 'Rahul (Groom Side)', ownerPhone: '+91 98234 56789', location: 'Main Lawn Gate', status: 'upcoming' },
+      { id: 'ros-milni', subEventId: 'sub-wedding', title: 'Milni & Welcoming Ritual', startTime: '17:15', durationMinutes: 30, endTime: '17:45', bufferAfterMinutes: 15, isFixedTime: false, owner: 'Bride Family', location: 'Entrance Arch', status: 'upcoming' },
+      { id: 'ros-pheras', subEventId: 'sub-wedding', title: 'Sacred Vedic Pheras & Saptapadi', startTime: '18:00', durationMinutes: 60, endTime: '19:00', bufferAfterMinutes: 15, isFixedTime: true, owner: 'Pandit Sharmaji', ownerPhone: '+91 98900 11223', location: 'Central Mandap', status: 'upcoming', notes: 'Auspicious Muhurat fixed between 18:00 and 19:30' },
+      { id: 'ros-dinner', subEventId: 'sub-wedding', title: 'Dinner Buffet Opening', startTime: '19:15', durationMinutes: 90, endTime: '20:45', bufferAfterMinutes: 0, isFixedTime: false, owner: 'Mayur Caterers Lead', ownerPhone: '+91 98220 12345', location: 'Dining Hall', status: 'upcoming' },
+    ],
     activity: [
       {
         id: 'act-init',

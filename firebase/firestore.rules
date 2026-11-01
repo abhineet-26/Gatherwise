@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function ownsDoc() { return signedIn() && resource.data.ownerId == request.auth.uid; }
+    function creatingOwnDoc() { return signedIn() && request.resource.data.ownerId == request.auth.uid; }
+    function ownerUnchanged() { return request.resource.data.ownerId == resource.data.ownerId; }
+    function ownsEvent(eventId) {
+      return signedIn() &&
+        get(/databases/$(database)/documents/events/$(eventId)).data.ownerId == request.auth.uid;
+    }
+    function allowedCollection(name) {
+      return name in ['subEvents', 'budgetLines', 'commitments', 'payments', 'vendors', 'quotations',
+                      'tasks', 'guests', 'risks', 'scenarios', 'funding', 'runOfShow', 'ideas', 'activity'];
+    }
+    function reasonableSize() { return request.resource.data.keys().size() <= 60; }
+
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    match /events/{eventId} {
+      allow read:   if ownsDoc();
+      allow create: if creatingOwnDoc() && reasonableSize();
+      allow update: if ownsDoc() && ownerUnchanged() && reasonableSize();
+      allow delete: if ownsDoc();
+
+      match /{collection}/{docId} {
+        allow read:   if allowedCollection(collection) && ownsDoc();
+        allow create: if allowedCollection(collection) && creatingOwnDoc() && ownsEvent(eventId) && reasonableSize();
+        allow update: if allowedCollection(collection) && ownsDoc() && ownerUnchanged() && reasonableSize();
+        allow delete: if allowedCollection(collection) && ownsDoc();
+      }
+    }
+    // Everything else is denied by default.
+  }
+}

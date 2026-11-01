@@ -84,7 +84,7 @@ sequenceDiagram
   UI->>UI: Human Clicks "Approve" -> Dispatches Undoable Command
 ```
 
-### The Demo Path (Tested Journeys J1–J7)
+### The Demo Path (Tested Journeys J1–J9)
 - **J1 (First Plan in Minutes):** Complete the 6-step wizard for a 3-day Hindu wedding; instantly review the generated budget, timeline, and risk register derived from the wedding rule pack.
 - **J2 (Money Truth):** Inspect the stacked budget bar; log a ₹50,000 cash advance to a decorator and witness zero double-counting.
 - **J3 (Compare Caterers):** Evaluate Vendor A (₹1,400/plate + 18% GST) vs. Vendor B (₹1,550/plate all-inclusive) at 300 guests; see Vendor A normalised to ₹4,95,600 and Vendor B to ₹4,65,000 (true difference ₹30,600).
@@ -92,6 +92,8 @@ sequenceDiagram
 - **J5 (RSVP to Caterer):** Run the Headcount Planner; calculate guaranteed vs. expected turnout buffer; print the formatted Catering Brief with dietary breakdown.
 - **J6 (Time Pressure):** Use the Time Travel scrubber to jump from T-60 to T-7 days; watch the Readiness Bloom update and overdue tasks highlight.
 - **J7 (Rain on the Parade):** Review an outdoor setting warning; receive a 70% precipitation alert via Weather Watch; adopt the Copilot's proposed weatherproof marquee task and contingency reserve.
+- **J8 (Day-of Execution Mode):** Launch Day-of Mode on mobile; view the live Now/Next activity cards; trigger a 20-minute delay and witness automatic buffer absorption and fixed-time Muhurat breach detection.
+- **J9 (Funding & Sponsor Tracker):** Track festival and community sponsors; calculate confirmed vs. expected pipeline funding; view deliverables checklists and concentration risk alerts.
 
 ---
 
@@ -108,7 +110,13 @@ sequenceDiagram
 | **Quote Scanner** | ✓ | Quotation document upload (PDF/PNG/JPEG), OCR item extraction, subtotal math verification, and GST normalisation |
 | **Guest Management** | ✓ | Household units, multi-function RSVP tracking, search & filtering, CSV import/export with formula injection defense |
 | **Headcount & Catering** | ✓ | High/likely/low attendance planner, children plate equivalents, and print-ready Catering Brief with dietary breakdown |
+| **Seating Helper** | ✓ | Table capacity tracking, dietary preference displays, and instant guest seating allocation (GUE-09) |
 | **Invite Studio** | ✓ | Multilingual invitation copy generator (English, Hindi, Marathi, etc.) with personalized WhatsApp dispatch links |
+| **Run-of-Show & Day-of** | ✓ | Minute-by-minute timeline coordination, buffer absorption, delay cascade, fixed-time conflict checks, and mobile Now/Next mode (EXE-01, EXE-02) |
+| **Volunteer Roster** | ✓ | Shift scheduling, community station assignment, coverage gap warnings, and direct contact dispatch (EXE-03) |
+| **Funding & Sponsors** | ✓ | Multi-tier sponsorship pipeline, weighted expected funding, deliverables tracking, and concentration risk alerts (FND-01) |
+| **Hindi UI (i18n)** | ✓ | Comprehensive English and Hindi translation dictionary with seamless in-app language switching (SYS-06) |
+| **Cloud Mode Adapter** | ✓ | Implemented `FirestoreRepository` adapter & security rules in `firebase/firestore.rules` (marked unexercised without live cloud credentials) (SYS-05) |
 | **AI Copilot** | ✓ | PII-minimised context, read-only tools, number audit, proposal cards with diffs, and 50-step atomic undo |
 | **Rule-Based Fallback** | ✓ | Fully operational offline assistant matching intents to domain tools when no Gemini API key is present |
 | **Idea Studio** | ✓ | Curated celebration inspiration library with cultural context and 1-click "Pin to Task" |
@@ -118,11 +126,8 @@ sequenceDiagram
 | **Time Travel & Demo** | ✓ | 3 pre-seeded celebration scenarios with dynamic T-60 to T-0 date scrubber for live demonstrations |
 | **Data Portability** | ✓ | Full JSON workspace export, CSV downloads, printable PDF views, and 1-click workspace reset |
 
-### Roadmap (Standard Scope Exclusions & Future Tiers)
-- **Day-of Execution Mode:** Mobile run-of-show checklist and vendor contact dispatch (Full Tier).
-- **Volunteer & Sponsor Tracker:** Shift scheduling and community sponsor deliverables (Full Tier).
-- **Public Guest RSVP Portal:** Dedicated public web link for self-serve guest RSVPs.
-- **Firebase Multi-User Sync:** Cloud Firestore collaboration mode (Standard Tier operates purely offline on IndexedDB).
+### Roadmap (Post-Full Tier Extensions)
+- **Public Guest RSVP Portal:** Dedicated public web link for self-serve guest RSVPs via secure HMAC tokens.
 - **Native Mobile Apps:** React Native or Flutter companion apps.
 
 ---
@@ -222,19 +227,19 @@ To connect live Google Gemini models:
 Every pull request and build runs the comprehensive test gate via `npm run check`.
 
 ### Real Test Execution Summary (2026-11-01)
-- **Test Files:** 23 passed (23 total)
-- **Tests:** 155 passed (155 total)
-- **Execution Duration:** ~4.0 seconds
+- **Test Files:** 26 passed (26 total)
+- **Tests:** 171 passed (171 total)
+- **Execution Duration:** ~5.3 seconds
 - **Pass Rate:** 100%
 
 ### Test Categories
-1. **Golden Domain Kernel (`shared/domain/**`):** 117 tests verifying integer money math, largest remainder allocation, GST quote normalisation, lead-time schedule compression, attendance estimation, and Readiness Bloom score vectors.
-2. **Reversible Command Pipeline (`shared/commands/**`):** Verifies that every mutation produces a valid inverse and that 50-step undo operations restore state bit-for-bit.
-3. **Architecture Fitness (`tests/architecture.test.ts`):** 6 tests strictly verifying domain isolation, zero cross-boundary imports between `src` and `server`, no `eval`/`dangerouslySetInnerHTML`, max 400 lines per file, and zero secret leakage in built bundles.
-4. **Integration & Journeys (`tests/phase*.test.ts`):** Verifies end-to-end user journeys J1 through J7, including quote comparison deltas, fallback AI assistant, and weather-triggered contingency plans.
+1. **Golden Domain Kernel (`shared/domain/**`):** 123 tests verifying integer money math, largest remainder allocation, GST quote normalisation, lead-time schedule compression, attendance estimation, Readiness Bloom score vectors, run-of-show delay cascades, and sponsorship funding summaries.
+2. **Reversible Command Pipeline (`shared/commands/**`):** Verifies that every mutation produces a valid inverse and that 50-step undo operations restore state bit-for-bit (including execution and funding commands).
+3. **Architecture Fitness (`tests/architecture.test.ts`):** 6 tests strictly verifying domain isolation, zero cross-boundary imports between `src` and `server`, no `eval`/`dangerouslySetInnerHTML`, max 400 lines per file, allowed Firebase adapter constraints, and zero secret leakage in built bundles.
+4. **Integration & Journeys (`tests/phase*.test.ts`):** Verifies end-to-end user journeys J1 through J9, including quote comparison deltas, fallback AI assistant, weather-triggered contingency plans, mobile Day-of schedule cascades, and sponsorship pipeline coverage.
 
 ### Not Run / Known Gaps
-- **Firebase Emulator Tests:** Not run; Standard Scope relies exclusively on the fully-tested local IndexedDB repository.
+- **Firebase Emulator Tests:** Not run; Cloud mode adapter and firestore security rules (`firebase/firestore.rules`) are implemented and contract-tested against in-memory cache, but emulator testing was not run without live credentials.
 - **Live Gemini API Smoke Tests:** Automated CI tests use `FakeLlmPort`; live Gemini tests require a personal `GEMINI_API_KEY`.
 - **Automated Screen-Reader Audio Verification:** Form controls, ARIA attributes, and keyboard navigation were verified in code and browser DOM, but manual voiceover testing was not performed across all screens.
 

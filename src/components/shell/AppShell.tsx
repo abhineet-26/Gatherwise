@@ -20,8 +20,12 @@ import {
   X,
   SlidersHorizontal,
   Lightbulb,
+  Clock,
+  HandCoins,
+  Globe,
 } from 'lucide-react';
 import clsx from 'clsx';
+import { useI18n } from '../../i18n';
 
 export type NavItem =
   | 'dashboard'
@@ -33,6 +37,8 @@ export type NavItem =
   | 'ideas'
   | 'copilot'
   | 'what-if'
+  | 'runofshow'
+  | 'funding'
   | 'risks'
   | 'reconciliation'
   | 'settings';
@@ -59,17 +65,20 @@ export const AppShell: React.FC<AppShellProps> = ({
   aiEnabled = false,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useI18n();
 
   const navLinks: { id: NavItem; label: string; icon: React.ReactNode; badge?: string }[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { id: 'events', label: 'My Events', icon: <Calendar className="w-5 h-5" /> },
-    { id: 'budget', label: 'Budget Planner', icon: <Wallet className="w-5 h-5" /> },
-    { id: 'tasks', label: 'Timeline & Tasks', icon: <CheckSquare className="w-5 h-5" /> },
-    { id: 'vendors', label: 'Vendors & Quotes', icon: <Store className="w-5 h-5" /> },
-    { id: 'guests', label: 'Guests & RSVP', icon: <Users className="w-5 h-5" /> },
-    { id: 'ideas', label: 'Idea Studio', icon: <Lightbulb className="w-5 h-5" /> },
-    { id: 'copilot', label: 'AI Copilot', icon: <Sparkles className="w-5 h-5" />, badge: aiEnabled ? 'Live' : 'Rule-based' },
-    { id: 'what-if', label: 'What-if Lab', icon: <SlidersHorizontal className="w-5 h-5" /> },
+    { id: 'dashboard', label: t('dashboard'), icon: <LayoutDashboard className="w-5 h-5" /> },
+    { id: 'events', label: t('myEvents'), icon: <Calendar className="w-5 h-5" /> },
+    { id: 'budget', label: t('budget'), icon: <Wallet className="w-5 h-5" /> },
+    { id: 'tasks', label: t('tasks'), icon: <CheckSquare className="w-5 h-5" /> },
+    { id: 'vendors', label: t('vendors'), icon: <Store className="w-5 h-5" /> },
+    { id: 'guests', label: t('guests'), icon: <Users className="w-5 h-5" /> },
+    { id: 'ideas', label: t('ideas'), icon: <Lightbulb className="w-5 h-5" /> },
+    { id: 'copilot', label: t('copilot'), icon: <Sparkles className="w-5 h-5" />, badge: aiEnabled ? 'Live' : 'Rule-based' },
+    { id: 'runofshow', label: t('runofshow'), icon: <Clock className="w-5 h-5" /> },
+    { id: 'funding', label: t('funding'), icon: <HandCoins className="w-5 h-5" /> },
+    { id: 'what-if', label: t('what-if'), icon: <SlidersHorizontal className="w-5 h-5" /> },
     { id: 'risks', label: 'Risks & Contingency', icon: <ShieldAlert className="w-5 h-5" /> },
     { id: 'reconciliation', label: 'Post-Event Audit', icon: <FileSpreadsheet className="w-5 h-5" /> },
   ];
@@ -267,6 +276,17 @@ export const AppShell: React.FC<AppShellProps> = ({
                 <span>INR</span>
                 <span>₹</span>
               </div>
+
+              {/* Language Switcher (SYS-06) */}
+              <button
+                onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
+                className="flex items-center gap-1 bg-gw-sunken px-2.5 py-1 rounded-lg text-xs font-semibold text-gw-indigo-700 border border-gw-line/60 hover:bg-gw-indigo-50 transition-colors"
+                title="Switch Language (English / हिन्दी)"
+                lang={language === 'en' ? 'hi' : 'en'}
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
+              </button>
 
               {/* Ask Copilot Button */}
               <button

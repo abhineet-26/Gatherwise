@@ -10,6 +10,8 @@ export interface WorkspaceData {
   guests?: Record<string, unknown>[];
   risks?: Record<string, unknown>[];
   activity?: Record<string, unknown>[];
+  runOfShow?: Record<string, unknown>[];
+  funding?: Record<string, unknown>[];
 }
 
 export interface WorkspaceRepository {

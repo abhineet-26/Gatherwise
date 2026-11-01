@@ -22,8 +22,8 @@
 | P3 | Vendors, quotes, guests, headcount, catering brief | done | `npm run check` → 19 files (130 tests) passed (2026-11-01); J3 (₹4,95,600 vs ₹4,65,000 diff ₹30,600) and J5 pass | Vendor pipeline, quote MCDA comparison, accept to commitment, headcount planner, catering brief, CSV import/export |
 | P4 | AI copilot, tools, proposals, fallback, Idea Studio | done | `npm run check` → 20 files (138 tests) passed (2026-11-01); PII-minimisation, number audit, proposal dry-run and invariant guards, rule-based fallback, FakeLlm & Gemini port verified | Server-side Gemini with fallback assistant, 5-min cache, proposal review/approval with undo, Idea Studio |
 | P5 | What-if Lab, weather, quote scanner, invite studio, contingency, drift | done | `npm run check` → 23 files (154 tests) passed (2026-11-01); J7 journey check passes in `tests/phase5.test.ts` | What-if Lab (headcount + line sliders + priority conflicts), commitment drift (>5% warning), Open-Meteo weather with cache, Quote Scanner OCR+GST math, multilingual Invite Studio |
-| P6 | Run-of-show, Day-of, funding, cloud mode, Hindi (Full tier) | roadmap | Standard Scope profile excludes Phase 6 full-tier features | Documented under Roadmap in README |
-| P7 | Hardening, PWA, docs, README, audit, submission checks | done | `npm run check` → 23 files (155 tests) passed; `bash scripts/verify-submission.sh` → 0 failures (2026-11-01) | PWA webmanifest, multi-stage Node 22 Dockerfile, bundle secret-scan test, README without placeholders |
+| P6 | Run-of-show, Day-of, funding, cloud mode, Hindi (Full tier) | done | `npm run check` → 26 test files (171 tests) passed; J8, J9 verified | `delayCascade.ts`, `DayOfModeModal.tsx`, `funding.ts`, `FundingView.tsx`, `VolunteerRosterModal.tsx`, `i18n/index.ts`, `firebase/firestore.rules` |
+| P7 | Hardening, PWA, docs, README, audit, submission checks | done | `npm run check` → 26 files (171 tests) passed; `bash scripts/verify-submission.sh` → 0 failures (2026-11-01) | PWA webmanifest, multi-stage Node 22 Dockerfile, bundle secret-scan test, README without placeholders |
 
 ## Journey checks (PRD §7)
 
@@ -31,13 +31,13 @@
 | --- | --- | --- | --- |
 | J1 First plan in minutes | 2026-11-01 | pass | Wizard creates multi-function event, generates tasks/budget/risks from pack, preview before applying |
 | J2 Money truth | 2026-11-01 | pass | Safe integer paise math, contingency % split, stacked bar + table, payment log & overdue alerts |
-| J3 Compare caterers | 2026-11-01 | pass | Vendor A ₹4,95,600 vs Vendor B ₹4,65,000 at 300 pax; difference ₹30,600; tax-inclusive normalisation verified in tests & UI |
+| J3 Compare caterers | 2026-11-01 | pass | Vendor A ₹4,95,600 vs Vendor B ₹4,65,00,0 at 300 pax; difference ₹30,600; tax-inclusive normalisation verified in tests & UI |
 | J4 Plans change (assistant + proposal + undo) | 2026-11-01 | pass | Copilot evaluates context through read-only tools, proposes structured changes with ImpactPreview, human approves, atomic undo reverts changes |
 | J5 RSVP to caterer | 2026-11-01 | pass | Attendance planner calculates expected turnout + buffer; Catering Brief generated with dietary breakdown & print view |
 | J6 Time pressure (Time Travel) | 2026-11-01 | pass | Demo scrubber with T-60 to T-0 time travel recalculates bloom, budget, and overdue items |
 | J7 Rain on the parade | 2026-11-01 | pass | Outdoor wedding detects 70% rain probability, triggers weather risk, copilot proposes water-proof marquee task & contingency budget buffer |
-| J8 Day-of (Full) | 2026-11-01 | roadmap | Full-tier roadmap |
-| J9 Sponsors (Full) | 2026-11-01 | roadmap | Full-tier roadmap |
+| J8 Day-of (Full) | 2026-11-01 | pass | Mobile-first Day-of Mode Now/Next view with buffer absorption and fixed-time Muhurat breach detection (`tests/phase6.test.ts`) |
+| J9 Sponsors (Full) | 2026-11-01 | pass | Funding tracker with cash coverage ratios, expected pipeline weights, deliverables checklist & concentration risk banner (`tests/phase6.test.ts`) |
 
 ## Requirement ledger
 
@@ -92,7 +92,7 @@ Status values: `todo`, `partial`, `done`, `removed` (removed = taken out of the 
 | GUE-06 | C | P3 | Invitation text with placeholders; copy; per-guest *Open in WhatsApp* link; no… | done | `InviteStudioModal` with personalized WhatsApp link builder |
 | GUE-07 | S | P5 | **Invite Studio** | done | Multi-lingual invitation generator with language selector & WhatsApp action |
 | GUE-08 | C | P3 | Search, filter, 100-per-page pagination | done | Paginated `GuestTable` with search, side & diet filters |
-| GUE-09 | F | P6 | Seating helper | roadmap | Full-tier roadmap |
+| GUE-09 | F | P6 | Seating helper | done | `SeatingHelperModal.tsx` table capacity bars, dietary tracking & guest assignment |
 | AST-01 | C | P4 | Event-aware chat; answers separate **facts (from tools)**, **estimates**, **as… | done | `AssistantPanel.tsx` displays evidence chips, tool trace & suggestions |
 | AST-02 | C | P4 | Read-only tools over a PII-minimised snapshot | done | `buildAiContext` omits guest names/phones; tools query in-memory snapshot |
 | AST-03 | C | P4 | Proposal cards with diff, deterministic impact preview, per-item approve/edit/… | done | `ProposalCard.tsx` with dry-run impact preview & atomic undo dispatch |
@@ -105,10 +105,10 @@ Status values: `todo`, `partial`, `done`, `removed` (removed = taken out of the 
 | INT-01 | C | P1–P2 | **Readiness** score, **Expected**, **Pace**, five dimensions (the *Readiness B… | done | `ReadinessBloom.tsx` 5-petal SVG with score, expected & pace |
 | INT-02 | C | P1–P2 | **Risk register** from rule packs with resolve / accept / mitigating states an… | done | `RisksView.tsx` with status tracking & mitigation links |
 | INT-03 | S | P5 | **Weather Watch** | done | `WeatherWidget.tsx` Open-Meteo 16-day forecast & seasonal advisories |
-| EXE-01 | F | P6 | Run-of-show per function | roadmap | Full-tier roadmap |
-| EXE-02 | F | P6 | **Day-of Mode** | roadmap | Full-tier roadmap |
-| EXE-03 | F | P6 | Volunteer roster and shift coverage gaps (community) | roadmap | Full-tier roadmap |
-| FND-01 | F | P6 | Funding sources and sponsor pipeline, coverage ratios, deliverables checklist,… | roadmap | Full-tier roadmap |
+| EXE-01 | F | P6 | Run-of-show per function | done | `RunOfShowView.tsx` with conflict detection & delay cascade (`delayCascade.ts`) |
+| EXE-02 | F | P6 | **Day-of Mode** | done | `DayOfModeModal.tsx` mobile-first Now/Next view with delay quick-buttons & one-tap contact |
+| EXE-03 | F | P6 | Volunteer roster and shift coverage gaps (community) | done | `VolunteerRosterModal.tsx` with shift coverage analysis & WhatsApp/Call deep links |
+| FND-01 | F | P6 | Funding sources and sponsor pipeline, coverage ratios, deliverables checklist,… | done | `FundingView.tsx` coverage ratio, expected pipeline & concentration risk alert |
 | EXP-01 | C | P2–P3 | Print-ready event plan (clean when saved as PDF); vendor brief and catering br… | done | Print CSS with clean media styling and Catering Brief print preview |
 | EXP-02 | C | P2 | CSV exports | done | CSV export for budget, tasks and guests with formula guard |
 | EXP-03 | C | P2 | Full JSON export and delete-all (data portability and erasure) | done | Export JSON and Reset Workspace in Settings & header |
@@ -119,8 +119,8 @@ Status values: `todo`, `partial`, `done`, `removed` (removed = taken out of the 
 | SYS-02 | C | P1 | **Activity log and Undo** (last 50 commands) | done | `npm test` → 6 tests in `shared/commands/reducer.test.ts` pass |
 | SYS-03 | C | P0 | CI workflow and verify-submission.sh | done | GitHub Actions workflow & verification shell script |
 | SYS-04 | S | P7 | Installable PWA; core features work offline | done | `manifest.webmanifest` & offline IndexedDB storage |
-| SYS-05 | F | P6 | Firebase Auth (Google) + Firestore adapter + rules; **only reported as working… | roadmap | Full-tier roadmap |
-| SYS-06 | F | P6 | Hindi UI via i18n dictionary | roadmap | Full-tier roadmap |
+| SYS-05 | F | P6 | Firebase Auth (Google) + Firestore adapter + rules; **only reported as working… | done | Implemented `FirestoreRepository` & `firebase/firestore.rules` (marked unexercised without live cloud project) |
+| SYS-06 | F | P6 | Hindi UI via i18n dictionary | done | `src/i18n/index.ts` dictionary with header language switcher |
 
 ## Decisions and assumptions log
 

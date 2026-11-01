@@ -14,6 +14,8 @@ import { LandingPage } from './features/landing/LandingPage';
 import { AssistantPanel } from './features/copilot/AssistantPanel';
 import { IdeaStudioView } from './features/copilot/IdeaStudioView';
 import { WhatIfView } from './features/whatif/WhatIfView';
+import { RunOfShowView } from './features/runofshow/RunOfShowView';
+import { FundingView } from './features/funding/FundingView';
 import { createSeededScenarios } from './demo/seedData';
 
 export default function App() {
@@ -64,6 +66,8 @@ export default function App() {
     else if (nav === 'guests') setActiveTab('guests');
     else if (nav === 'ideas') setActiveTab('ideas');
     else if (nav === 'what-if') setActiveTab('what-if');
+    else if (nav === 'runofshow') setActiveTab('runofshow');
+    else if (nav === 'funding') setActiveTab('funding');
     else if (nav === 'copilot') setAssistantOpen(true);
     else if (nav === 'events') setShowLanding(true);
     else if (nav === 'settings') setActiveTab('settings');
@@ -78,6 +82,8 @@ export default function App() {
     guests: 'guests',
     ideas: 'ideas',
     'what-if': 'what-if',
+    runofshow: 'runofshow',
+    funding: 'funding',
     activity: 'dashboard',
     settings: 'settings',
   };
@@ -146,6 +152,12 @@ export default function App() {
 
       {/* What-if Lab View */}
       {activeTab === 'what-if' && <WhatIfView />}
+
+      {/* Run-of-Show & Day-of Mode (EXE-01, EXE-02) */}
+      {activeTab === 'runofshow' && <RunOfShowView />}
+
+      {/* Sponsorship & Funding Tracker (FND-01) */}
+      {activeTab === 'funding' && <FundingView />}
 
       {/* Floating Assistant Drawer */}
       <AssistantPanel isOpen={assistantOpen} onClose={() => setAssistantOpen(false)} />

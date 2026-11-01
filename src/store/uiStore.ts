@@ -9,6 +9,8 @@ export type WorkspaceTab =
   | 'guests' 
   | 'ideas' 
   | 'what-if'
+  | 'runofshow'
+  | 'funding'
   | 'activity' 
   | 'settings';
 

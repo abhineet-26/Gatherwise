@@ -7,8 +7,9 @@ import { GuestModal } from './GuestModals';
 import { InviteStudioModal } from './InviteStudioModal';
 import { GuestCsvModal } from './GuestCsvModal';
 import { HeadcountPlannerView } from './HeadcountPlannerView';
+import { SeatingHelperModal } from './SeatingHelperModal';
 import { GuestTable } from './GuestTable';
-import { Search, FileSpreadsheet, UserPlus, Utensils, Mail } from 'lucide-react';
+import { Search, FileSpreadsheet, UserPlus, Utensils, Mail, Armchair } from 'lucide-react';
 
 export const GuestsView: React.FC = () => {
   const { workspace, dispatch } = useWorkspaceStore();
@@ -24,6 +25,7 @@ export const GuestsView: React.FC = () => {
   const [isAddGuestOpen, setIsAddGuestOpen] = useState(false);
   const [isCsvModalOpen, setIsCsvModalOpen] = useState(false);
   const [isInviteStudioOpen, setIsInviteStudioOpen] = useState(false);
+  const [isSeatingModalOpen, setIsSeatingModalOpen] = useState(false);
   const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
   const [inviteGuest, setInviteGuest] = useState<Guest | null>(null);
 
@@ -150,6 +152,14 @@ export const GuestsView: React.FC = () => {
             onClick={() => setIsInviteStudioOpen(true)}
           >
             <Mail className="w-4 h-4 mr-1 text-primary" /> Invite Studio
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setIsSeatingModalOpen(true)}
+          >
+            <Armchair className="w-4 h-4 mr-1 text-amber-600" /> Seating Helper
           </Button>
 
           <Button
@@ -283,6 +293,12 @@ export const GuestsView: React.FC = () => {
         onImport={handleImportCsv}
         existingGuests={guests}
         eventId={event.id}
+      />
+
+      <SeatingHelperModal
+        isOpen={isSeatingModalOpen}
+        onClose={() => setIsSeatingModalOpen(false)}
+        guests={guests}
       />
     </div>
   );
