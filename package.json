@@ -12,7 +12,7 @@
     "build:server": "tsc -p tsconfig.server.json",
     "build": "npm run build:client && npm run build:server",
     "start": "node dist/server/index.js",
-    "start:python": ".venv/bin/uvicorn backend.app.main:app --port 8000",
+    "start:python": ".venv/bin/uvicorn backend.app.main:app --port 5001",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit",
     "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "test": "vitest run",

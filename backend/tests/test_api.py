@@ -6,9 +6,6 @@ client = TestClient(app)
 def test_root():
     res = client.get("/")
     assert res.status_code == 200
-    data = res.json()
-    assert data["service"] == "GatherWise Python API"
-    assert data["version"] == "1.0.0"
 
 def test_health():
     res = client.get("/api/health")

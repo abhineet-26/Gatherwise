@@ -6,10 +6,10 @@ const usePython = process.env.BACKEND_TYPE !== 'node' && fs.existsSync('.venv/bi
 
 let server;
 if (usePython) {
-  console.log('🐍 Starting Python FastAPI Backend on http://localhost:8000...');
-  server = spawn('.venv/bin/uvicorn', ['backend.app.main:app', '--reload', '--port', '8000'], {
+  console.log('🐍 Starting Python FastAPI Backend on http://localhost:5001...');
+  server = spawn('.venv/bin/uvicorn', ['backend.app.main:app', '--reload', '--port', '5001'], {
     stdio: 'inherit',
-    env: { ...process.env, PORT: '8000' },
+    env: { ...process.env, PORT: '5001' },
   });
 } else {
   console.log('🟢 Starting Node.js Express Backend on http://localhost:3001...');
@@ -23,7 +23,7 @@ const client = spawn('npx', ['vite'], {
   stdio: 'inherit',
   env: {
     ...process.env,
-    API_TARGET: usePython ? 'http://localhost:8000' : 'http://localhost:3001',
+    API_TARGET: usePython ? 'http://localhost:5001' : 'http://localhost:3001',
   },
 });
 
